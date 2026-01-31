@@ -1,0 +1,332 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <dui/colors.h>
+
+const DUI_Palette PALETTE_SLATE = {
+    ._50 = DUI_COLOR(0xF8FAFC),
+    ._100 = DUI_COLOR(0xF1F5F9),
+    ._200 = DUI_COLOR(0xE2E8F0),
+    ._300 = DUI_COLOR(0xCBD5E1),
+    ._400 = DUI_COLOR(0x94A3B8),
+    ._500 = DUI_COLOR(0x64748B),
+    ._600 = DUI_COLOR(0x475569),
+    ._700 = DUI_COLOR(0x334155),
+    ._800 = DUI_COLOR(0x1E293B),
+    ._900 = DUI_COLOR(0x0F172A),
+    ._950 = DUI_COLOR(0x020617),
+};
+
+const DUI_Palette PALETTE_GRAY = {
+    ._50 = DUI_COLOR(0xF9FAFB),
+    ._100 = DUI_COLOR(0xF3F4F6),
+    ._200 = DUI_COLOR(0xE5E7EB),
+    ._300 = DUI_COLOR(0xD1D5DB),
+    ._400 = DUI_COLOR(0x9CA3AF),
+    ._500 = DUI_COLOR(0x6B7280),
+    ._600 = DUI_COLOR(0x4B5563),
+    ._700 = DUI_COLOR(0x374151),
+    ._800 = DUI_COLOR(0x1F2937),
+    ._900 = DUI_COLOR(0x111827),
+    ._950 = DUI_COLOR(0x030712),
+};
+
+const DUI_Palette PALETTE_ZINC = {
+    ._50 = DUI_COLOR(0xFAFAFA),
+    ._100 = DUI_COLOR(0xF4F4F5),
+    ._200 = DUI_COLOR(0xE4E4E7),
+    ._300 = DUI_COLOR(0xD4D4D8),
+    ._400 = DUI_COLOR(0xA1A1AA),
+    ._500 = DUI_COLOR(0x71717A),
+    ._600 = DUI_COLOR(0x52525B),
+    ._700 = DUI_COLOR(0x3F3F46),
+    ._800 = DUI_COLOR(0x27272A),
+    ._900 = DUI_COLOR(0x18181B),
+    ._950 = DUI_COLOR(0x09090B),
+};
+
+const DUI_Palette PALETTE_NEUTRAL = {
+    ._50 = DUI_COLOR(0xFAFAFA),
+    ._100 = DUI_COLOR(0xF5F5F5),
+    ._200 = DUI_COLOR(0xE5E5E5),
+    ._300 = DUI_COLOR(0xD4D4D4),
+    ._400 = DUI_COLOR(0xA3A3A3),
+    ._500 = DUI_COLOR(0x737373),
+    ._600 = DUI_COLOR(0x525252),
+    ._700 = DUI_COLOR(0x404040),
+    ._800 = DUI_COLOR(0x262626),
+    ._900 = DUI_COLOR(0x171717),
+    ._950 = DUI_COLOR(0x0A0A0A),
+};
+
+const DUI_Palette PALETTE_STONE = {
+    ._50 = DUI_COLOR(0xFAFAF9),
+    ._100 = DUI_COLOR(0xF5F5F4),
+    ._200 = DUI_COLOR(0xE7E5E4),
+    ._300 = DUI_COLOR(0xD6D3D1),
+    ._400 = DUI_COLOR(0xA8A29E),
+    ._500 = DUI_COLOR(0x78716C),
+    ._600 = DUI_COLOR(0x57534E),
+    ._700 = DUI_COLOR(0x44403C),
+    ._800 = DUI_COLOR(0x292524),
+    ._900 = DUI_COLOR(0x1C1917),
+    ._950 = DUI_COLOR(0x0C0A09),
+};
+
+const DUI_Palette PALETTE_RED = {
+    ._50 = DUI_COLOR(0xFEF2F2),
+    ._100 = DUI_COLOR(0xFEE2E2),
+    ._200 = DUI_COLOR(0xFECACA),
+    ._300 = DUI_COLOR(0xFCA5A5),
+    ._400 = DUI_COLOR(0xF87171),
+    ._500 = DUI_COLOR(0xEF4444),
+    ._600 = DUI_COLOR(0xDC2626),
+    ._700 = DUI_COLOR(0xB91C1C),
+    ._800 = DUI_COLOR(0x991B1B),
+    ._900 = DUI_COLOR(0x7F1D1D),
+    ._950 = DUI_COLOR(0x450A0A),
+};
+
+const DUI_Palette PALETTE_ORANGE = {
+    ._50 = DUI_COLOR(0xFFF7ED),
+    ._100 = DUI_COLOR(0xFFEDD5),
+    ._200 = DUI_COLOR(0xFED7AA),
+    ._300 = DUI_COLOR(0xFDBA74),
+    ._400 = DUI_COLOR(0xFB923C),
+    ._500 = DUI_COLOR(0xF97316),
+    ._600 = DUI_COLOR(0xEA580C),
+    ._700 = DUI_COLOR(0xC2410C),
+    ._800 = DUI_COLOR(0x9A3412),
+    ._900 = DUI_COLOR(0x7C2D12),
+    ._950 = DUI_COLOR(0x431407),
+};
+
+const DUI_Palette PALETTE_AMBER = {
+    ._50 = DUI_COLOR(0xFFFBEB),
+    ._100 = DUI_COLOR(0xFEF3C7),
+    ._200 = DUI_COLOR(0xFDE68A),
+    ._300 = DUI_COLOR(0xFCD34D),
+    ._400 = DUI_COLOR(0xFBBF24),
+    ._500 = DUI_COLOR(0xF59E0B),
+    ._600 = DUI_COLOR(0xD97706),
+    ._700 = DUI_COLOR(0xB45309),
+    ._800 = DUI_COLOR(0x92400E),
+    ._900 = DUI_COLOR(0x78350F),
+    ._950 = DUI_COLOR(0x451A03),
+};
+
+const DUI_Palette PALETTE_YELLOW = {
+    ._50 = DUI_COLOR(0xFEFCE8),
+    ._100 = DUI_COLOR(0xFEF9C3),
+    ._200 = DUI_COLOR(0xFEF08A),
+    ._300 = DUI_COLOR(0xFDE047),
+    ._400 = DUI_COLOR(0xFACC15),
+    ._500 = DUI_COLOR(0xEAB308),
+    ._600 = DUI_COLOR(0xCA8A04),
+    ._700 = DUI_COLOR(0xA16207),
+    ._800 = DUI_COLOR(0x854D0E),
+    ._900 = DUI_COLOR(0x713F12),
+    ._950 = DUI_COLOR(0x422006),
+};
+
+const DUI_Palette PALETTE_LIME = {
+    ._50 = DUI_COLOR(0xF7FEE7),
+    ._100 = DUI_COLOR(0xECFCCB),
+    ._200 = DUI_COLOR(0xD9F99D),
+    ._300 = DUI_COLOR(0xBEF264),
+    ._400 = DUI_COLOR(0xA3E635),
+    ._500 = DUI_COLOR(0x84CC16),
+    ._600 = DUI_COLOR(0x65A30D),
+    ._700 = DUI_COLOR(0x4D7C0F),
+    ._800 = DUI_COLOR(0x3F6212),
+    ._900 = DUI_COLOR(0x365314),
+    ._950 = DUI_COLOR(0x1A2E05),
+};
+
+const DUI_Palette PALETTE_GREEN = {
+    ._50 = DUI_COLOR(0xF0FDF4),
+    ._100 = DUI_COLOR(0xDCFCE7),
+    ._200 = DUI_COLOR(0xBBF7D0),
+    ._300 = DUI_COLOR(0x86EFAC),
+    ._400 = DUI_COLOR(0x4ADE80),
+    ._500 = DUI_COLOR(0x22C55E),
+    ._600 = DUI_COLOR(0x16A34A),
+    ._700 = DUI_COLOR(0x15803D),
+    ._800 = DUI_COLOR(0x166534),
+    ._900 = DUI_COLOR(0x14532D),
+    ._950 = DUI_COLOR(0x052E16),
+};
+
+const DUI_Palette PALETTE_EMERALD = {
+    ._50 = DUI_COLOR(0xECFDF5),
+    ._100 = DUI_COLOR(0xD1FAE5),
+    ._200 = DUI_COLOR(0xA7F3D0),
+    ._300 = DUI_COLOR(0x6EE7B7),
+    ._400 = DUI_COLOR(0x34D399),
+    ._500 = DUI_COLOR(0x10B981),
+    ._600 = DUI_COLOR(0x059669),
+    ._700 = DUI_COLOR(0x047857),
+    ._800 = DUI_COLOR(0x065F46),
+    ._900 = DUI_COLOR(0x064E3B),
+    ._950 = DUI_COLOR(0x022C22),
+};
+
+const DUI_Palette PALETTE_TEAL = {
+    ._50 = DUI_COLOR(0xF0FDFA),
+    ._100 = DUI_COLOR(0xCCFBF1),
+    ._200 = DUI_COLOR(0x99F6E4),
+    ._300 = DUI_COLOR(0x5EEAD4),
+    ._400 = DUI_COLOR(0x2DD4BF),
+    ._500 = DUI_COLOR(0x14B8A6),
+    ._600 = DUI_COLOR(0x0D9488),
+    ._700 = DUI_COLOR(0x0F766E),
+    ._800 = DUI_COLOR(0x115E59),
+    ._900 = DUI_COLOR(0x134E4A),
+    ._950 = DUI_COLOR(0x042F2E),
+};
+
+const DUI_Palette PALETTE_CYAN = {
+    ._50 = DUI_COLOR(0xECFEFF),
+    ._100 = DUI_COLOR(0xCFFAFE),
+    ._200 = DUI_COLOR(0xA5F3FC),
+    ._300 = DUI_COLOR(0x67E8F9),
+    ._400 = DUI_COLOR(0x22D3EE),
+    ._500 = DUI_COLOR(0x06B6D4),
+    ._600 = DUI_COLOR(0x0891B2),
+    ._700 = DUI_COLOR(0x0E7490),
+    ._800 = DUI_COLOR(0x155E75),
+    ._900 = DUI_COLOR(0x164E63),
+    ._950 = DUI_COLOR(0x083344),
+};
+
+const DUI_Palette PALETTE_SKY = {
+    ._50 = DUI_COLOR(0xF0F9FF),
+    ._100 = DUI_COLOR(0xE0F2FE),
+    ._200 = DUI_COLOR(0xBAE6FD),
+    ._300 = DUI_COLOR(0x7DD3FC),
+    ._400 = DUI_COLOR(0x38BDF8),
+    ._500 = DUI_COLOR(0x0EA5E9),
+    ._600 = DUI_COLOR(0x0284C7),
+    ._700 = DUI_COLOR(0x0369A1),
+    ._800 = DUI_COLOR(0x075985),
+    ._900 = DUI_COLOR(0x0C4A6E),
+    ._950 = DUI_COLOR(0x082F49),
+};
+
+const DUI_Palette PALETTE_BLUE = {
+    ._50 = DUI_COLOR(0xEFF6FF),
+    ._100 = DUI_COLOR(0xDBEAFE),
+    ._200 = DUI_COLOR(0xBFDBFE),
+    ._300 = DUI_COLOR(0x93C5FD),
+    ._400 = DUI_COLOR(0x60A5FA),
+    ._500 = DUI_COLOR(0x3B82F6),
+    ._600 = DUI_COLOR(0x2563EB),
+    ._700 = DUI_COLOR(0x1D4ED8),
+    ._800 = DUI_COLOR(0x1E40AF),
+    ._900 = DUI_COLOR(0x1E3A8A),
+    ._950 = DUI_COLOR(0x172554),
+};
+
+const DUI_Palette PALETTE_INDIGO = {
+    ._50 = DUI_COLOR(0xEEF2FF),
+    ._100 = DUI_COLOR(0xE0E7FF),
+    ._200 = DUI_COLOR(0xC7D2FE),
+    ._300 = DUI_COLOR(0xA5B4FC),
+    ._400 = DUI_COLOR(0x818CF8),
+    ._500 = DUI_COLOR(0x6366F1),
+    ._600 = DUI_COLOR(0x4F46E5),
+    ._700 = DUI_COLOR(0x4338CA),
+    ._800 = DUI_COLOR(0x3730A3),
+    ._900 = DUI_COLOR(0x312E81),
+    ._950 = DUI_COLOR(0x1E1B4B),
+};
+
+const DUI_Palette PALETTE_VIOLET = {
+    ._50 = DUI_COLOR(0xF5F3FF),
+    ._100 = DUI_COLOR(0xEDE9FE),
+    ._200 = DUI_COLOR(0xDDD6FE),
+    ._300 = DUI_COLOR(0xC4B5FD),
+    ._400 = DUI_COLOR(0xA78BFA),
+    ._500 = DUI_COLOR(0x8B5CF6),
+    ._600 = DUI_COLOR(0x7C3AED),
+    ._700 = DUI_COLOR(0x6D28D9),
+    ._800 = DUI_COLOR(0x5B21B6),
+    ._900 = DUI_COLOR(0x4C1D95),
+    ._950 = DUI_COLOR(0x2E1065),
+};
+
+const DUI_Palette PALETTE_PURPLE = {
+    ._50 = DUI_COLOR(0xFAF5FF),
+    ._100 = DUI_COLOR(0xF3E8FF),
+    ._200 = DUI_COLOR(0xE9D5FF),
+    ._300 = DUI_COLOR(0xD8B4FE),
+    ._400 = DUI_COLOR(0xC084FC),
+    ._500 = DUI_COLOR(0xA855F7),
+    ._600 = DUI_COLOR(0x9333EA),
+    ._700 = DUI_COLOR(0x7E22CE),
+    ._800 = DUI_COLOR(0x6B21A8),
+    ._900 = DUI_COLOR(0x581C87),
+    ._950 = DUI_COLOR(0x3B0764),
+};
+
+const DUI_Palette PALETTE_FUCHSIA = {
+    ._50 = DUI_COLOR(0xFDF4FF),
+    ._100 = DUI_COLOR(0xFAE8FF),
+    ._200 = DUI_COLOR(0xF5D0FE),
+    ._300 = DUI_COLOR(0xF0ABFC),
+    ._400 = DUI_COLOR(0xE879F9),
+    ._500 = DUI_COLOR(0xD946EF),
+    ._600 = DUI_COLOR(0xC026D3),
+    ._700 = DUI_COLOR(0xA21CAF),
+    ._800 = DUI_COLOR(0x86198F),
+    ._900 = DUI_COLOR(0x701A75),
+    ._950 = DUI_COLOR(0x4A044E),
+};
+
+const DUI_Palette PALETTE_PINK = {
+    ._50 = DUI_COLOR(0xFDF2F8),
+    ._100 = DUI_COLOR(0xFCE7F3),
+    ._200 = DUI_COLOR(0xFBCFE8),
+    ._300 = DUI_COLOR(0xF9A8D4),
+    ._400 = DUI_COLOR(0xF472B6),
+    ._500 = DUI_COLOR(0xEC4899),
+    ._600 = DUI_COLOR(0xDB2777),
+    ._700 = DUI_COLOR(0xBE185D),
+    ._800 = DUI_COLOR(0x9D174D),
+    ._900 = DUI_COLOR(0x831843),
+    ._950 = DUI_COLOR(0x500724),
+};
+
+const DUI_Palette PALETTE_ROSE = {
+    ._50 = DUI_COLOR(0xFFF1F2),
+    ._100 = DUI_COLOR(0xFFE4E6),
+    ._200 = DUI_COLOR(0xFECDD3),
+    ._300 = DUI_COLOR(0xFDA4AF),
+    ._400 = DUI_COLOR(0xFB7185),
+    ._500 = DUI_COLOR(0xF43F5E),
+    ._600 = DUI_COLOR(0xE11D48),
+    ._700 = DUI_COLOR(0xBE123C),
+    ._800 = DUI_COLOR(0x9F1239),
+    ._900 = DUI_COLOR(0x881337),
+    ._950 = DUI_COLOR(0x4C0519),
+};
+
+Color dui_palette_color(const DUI_Palette* palette, const DUI_Shade shade)
+{
+    switch (shade)
+    {
+    case SHADE_50: return palette->_50;
+    case SHADE_100: return palette->_100;
+    case SHADE_200: return palette->_200;
+    case SHADE_300: return palette->_300;
+    case SHADE_400: return palette->_400;
+    case SHADE_500: return palette->_500;
+    case SHADE_600: return palette->_600;
+    case SHADE_700: return palette->_700;
+    case SHADE_800: return palette->_800;
+    case SHADE_900: return palette->_900;
+    case SHADE_950: return palette->_950;
+    default:
+        fprintf(stderr, "Invalid shade value `%d`.", shade);
+        exit(1);
+    }
+}
