@@ -79,4 +79,6 @@ bool dui_env_has_focus_impl(const DUI_Element* element);
 
 Color dui_env_color(DUI_EnvironmentColorKind kind, DUI_EnvironmentColorShade shade);
 
+int dui_env_next_element_kind();
+
 #endif // DUI_ENVIRONMENT_H

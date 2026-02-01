@@ -111,10 +111,16 @@ bool dui_ctx_element_by_id_impl(const int kind, const int id, const bool tabOrde
 
 void dui_ctx_begin_impl(const int id, const DUI_ContextData data)
 {
+    static int element_kind_context = 0;
+    if (element_kind_context == 0)
+    {
+        element_kind_context = dui_env_next_element_kind();
+    }
+
     DUI_Environment *env = dui_env();
 
     DUI_ContextElement* element;
-    dui_ctx_element_by_id(ELEMENT_KIND_CONTEXT, id, data.tabOrderBack, false, element);
+    dui_ctx_element_by_id(element_kind_context, id, data.tabOrderBack, false, element);
     element->tabOrderFrontCursor = NULL;
     element->tabOrderBackCursor = NULL;
     element->placed_at_back = data.tabOrderBack;

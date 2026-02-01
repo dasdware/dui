@@ -6,8 +6,6 @@
 
 // - Elements
 
-#define ELEMENT_KIND_CONTEXT 1
-
 typedef struct DUI_Element DUI_Element;
 typedef struct DUI_ContextElement DUI_ContextElement;
 

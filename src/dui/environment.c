@@ -147,3 +147,10 @@ Color dui_env_color(DUI_EnvironmentColorKind kind, DUI_EnvironmentColorShade sha
         return dui_palette_color(shades->palette, shades->background_shade);
     }
 }
+
+int dui_env_next_element_kind()
+{
+    static int current_element_kind = 0;
+    current_element_kind += 1;
+    return current_element_kind;
+}

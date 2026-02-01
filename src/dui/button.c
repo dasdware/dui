@@ -5,6 +5,12 @@
 
 bool dui_button_impl(const int id, const DUI_ButtonData data)
 {
+    static int element_kind_button = 0;
+    if (element_kind_button == 0)
+    {
+        element_kind_button = dui_env_next_element_kind();
+    }
+
     const DUI_Environment *env = dui_env();
 
     const int text_width = (data.caption != NULL) ? dui_env_measure_text(data.caption).x : 0;
@@ -22,7 +28,7 @@ bool dui_button_impl(const int id, const DUI_ButtonData data)
     );
 
     DUI_ButtonElement* element;
-    if (dui_ctx_element_by_id(ELEMENT_KIND_BUTTON, id, bounds_data.tabOrderBack, data.disabled, element))
+    if (dui_ctx_element_by_id(element_kind_button, id, bounds_data.tabOrderBack, data.disabled, element))
     {
         element->background = dui_ca_create(dui_env_color(data.kind, ENV_SHADE_NORMAL));
         element->state = BUTTON_NORMAL;

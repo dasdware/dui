@@ -10,8 +10,6 @@
 #include <dui/environment.h>
 #include <dui/layout.h>
 
-#define ELEMENT_KIND_BUTTON 2
-
 typedef DUI_EnvironmentColorKind DUI_ButtonKind;
 
 
