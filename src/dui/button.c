@@ -1,7 +1,8 @@
 #include <dui/button.h>
 #include <dui/environment.h>
 
-#include "layout.h"
+#include <dui/layout.h>
+#include <dui/text.h>
 
 bool dui_button_impl(const int id, const DUI_ButtonData data)
 {
@@ -13,7 +14,7 @@ bool dui_button_impl(const int id, const DUI_ButtonData data)
 
     const DUI_Environment *env = dui_env();
 
-    const int text_width = (data.caption != NULL) ? dui_env_measure_text(data.caption).x : 0;
+    const int text_width = dui_text_measure(data.caption).x;
     const int padding = dui_env_spacing(1);
     const int preferred_width = text_width + 4 * padding;
     const int preferred_height = env->font_height + 2 * padding;
@@ -91,18 +92,13 @@ bool dui_button_impl(const int id, const DUI_ButtonData data)
 
     if (data.caption)
     {
-        const int offset_x = 2 * padding;
-        int offset_y = padding;
-        if (element->state == BUTTON_DOWN)
-        {
-            offset_y += 1;
-        }
-        dui_env_draw_text(
+        dui_text(
             data.caption,
-            bounds_data.bounds.x + offset_x,
-            bounds_data.bounds.y + offset_y,
-            dui_env_color(data.kind, data.disabled ? ENV_SHADE_DISABLED_TEXT : ENV_SHADE_TEXT)
-            );
+            bounds_data.bounds,
+            .horizontal_alignment = ALIGN_CENTER,
+            .vertical_alignment = ALIGN_CENTER,
+            .offset_y = (element->state == BUTTON_DOWN) ? 1 : 0,
+            .color = dui_env_color(data.kind, data.disabled ? ENV_SHADE_DISABLED_TEXT : ENV_SHADE_TEXT));
     }
 
     return result;

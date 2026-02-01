@@ -56,18 +56,6 @@ void dui_env_load_font(const char* file_name, const int size, const float spacin
     env->font = LoadFontEx(file_name, env->font_height, NULL, 0);
 }
 
-Vector2 dui_env_measure_text(const char* text)
-{
-    const DUI_Environment* env = dui_env();
-    return MeasureTextEx(env->font, text, env->font_height, env->font_spacing);
-}
-
-void dui_env_draw_text(const char* text, const int x, const int y, const Color tint)
-{
-    const DUI_Environment* env = dui_env();
-    DrawTextEx(env->font, text, CLITERAL(Vector2){x, y}, env->font_height, env->font_spacing, tint);
-}
-
 void dui_env_clear_background()
 {
     ClearBackground(dui_env_color(ENV_SECONDARY, ENV_SHADE_BACKGROUND));

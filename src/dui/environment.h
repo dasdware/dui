@@ -65,8 +65,6 @@ void dui_env_end();
 int dui_env_spacing(float n);
 
 void dui_env_load_font(const char* file_name, int size, float spacing);
-Vector2 dui_env_measure_text(const char* text);
-void dui_env_draw_text(const char* text, int x, int y, Color tint);
 
 void dui_env_clear_background();
 void dui_env_draw_focus_frame(Rectangle bounds, Color color);
