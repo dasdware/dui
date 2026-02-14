@@ -8,9 +8,7 @@
 #include <arena.h>
 
 #include <dui/layout.h>
-#include <dui/keyboard.h>
-
-
+#include <dui/label.h>
 
 int main(void)
 {
@@ -23,30 +21,32 @@ int main(void)
     while (!WindowShouldClose())
     {
         dui_env_begin();
-
-        dui_lay_begin_screen(.padding = 3);
-            dui_lay_begin_stack(.gap = 2);
-                if (dui_button(.caption = "Exit", .kind = ENV_PRIMARY, .opposite = true))
+        {
+            dui_lay_begin_screen(.padding = 3);
+            {
+                dui_lay_begin_stack(.gap = 2);
                 {
-                    break;
-                }
+                    dui_label("Buttons");
 
-                for (int i = 0; i < 10; ++i)
-                {
-                    if (dui_button(.caption = TextFormat("Click me #%d!", i), .opposite = (i % 2), .disabled = (i % 3 == 1)))
+                    dui_button(.caption = "Secondary");
+                    dui_button(.caption = "Secondary (disabled)", .disabled = true);
+                    dui_button(.caption = "Primary", .kind = ENV_PRIMARY);
+                    dui_button(.caption = "Primary (disabled)", .kind = ENV_PRIMARY, .disabled = true);
+
+                    dui_label("Labels");
+                    dui_label("Secondary");
+                    dui_label("Primary", .kind = ENV_PRIMARY);
+
+
+                    if (dui_button(.caption = "Exit", .kind = ENV_PRIMARY, .opposite = true))
                     {
-                        printf("Button %d clicked.\n", i);
+                        break;
                     }
                 }
-
-                dui_lay_begin_spaced(.count = 3, .remaining = true, .direction = DIRECTION_HORIZONTAL, .gap = 2);
-                    for (int i = 0; i < 3; ++i)
-                    {
-                        dui_button(.caption = TextFormat("Inner click click me #%d!", i), .kind = ENV_PRIMARY);
-                    }
                 dui_lay_end();
+            }
             dui_lay_end();
-        dui_lay_end();
+        }
 
         dui_env_end();
     }
