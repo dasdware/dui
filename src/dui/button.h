@@ -27,6 +27,7 @@ typedef enum
     BUTTON_NORMAL,
     BUTTON_HOVER,
     BUTTON_DOWN,
+    BUTTON_DISABLED,
 } DUI_Button_State;
 
 typedef struct
@@ -34,6 +35,7 @@ typedef struct
     DUI_Element element;
 
     DUI_ColorAnimation background;
+    DUI_ColorAnimation foreground;
     DUI_Button_State state;
 } DUI_ButtonElement;
 

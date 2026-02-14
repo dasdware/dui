@@ -31,16 +31,35 @@ bool dui_button_impl(const int id, const DUI_ButtonData data)
     DUI_ButtonElement* element;
     if (dui_ctx_element_by_id(element_kind_button, id, bounds_data.tabOrderBack, data.disabled, element))
     {
-        element->background = dui_ca_create(dui_env_color(data.kind, ENV_SHADE_NORMAL));
+        if (data.disabled)
+        {
+            element->background = dui_ca_create(dui_env_color(ENV_DEFAULT, ENV_SHADE_NORMAL));
+            element->foreground = dui_ca_create(dui_env_color(ENV_DEFAULT, ENV_SHADE_DISABLED_TEXT));
+            element->state = BUTTON_DISABLED;
+        } else
+        {
+            element->background = dui_ca_create(dui_env_color(data.kind, ENV_SHADE_NORMAL));
+            element->foreground = dui_ca_create(dui_env_color(data.kind, ENV_SHADE_TEXT));
+            element->state = BUTTON_NORMAL;
+        }
+    }
+
+    if (data.disabled && element->state != BUTTON_DISABLED)
+    {
+
+        dui_ca_start(&element->background, dui_env_color(ENV_DEFAULT, ENV_SHADE_NORMAL), 0.1);
+        dui_ca_start(&element->foreground, dui_env_color(ENV_DEFAULT, ENV_SHADE_DISABLED_TEXT), 0.1);
+        element->state = BUTTON_DISABLED;
+    }
+    if (!data.disabled && element->state == BUTTON_DISABLED)
+    {
+        dui_ca_start(&element->background, dui_env_color(data.kind, ENV_SHADE_NORMAL), 0.1);
+        dui_ca_start(&element->foreground, dui_env_color(data.kind, ENV_SHADE_TEXT), 0.1);
         element->state = BUTTON_NORMAL;
     }
 
-    if (data.disabled)
-    {
-        dui_ca_start(&element->background, dui_env_color(ENV_DEFAULT, ENV_SHADE_NORMAL), 0.1);
-    }
-
     dui_ca_update(&element->background);
+    dui_ca_update(&element->foreground);
 
     bool result = false;
     if (!data.disabled)
@@ -98,7 +117,8 @@ bool dui_button_impl(const int id, const DUI_ButtonData data)
             .horizontal_alignment = ALIGN_CENTER,
             .vertical_alignment = ALIGN_CENTER,
             .offset_y = (element->state == BUTTON_DOWN) ? 1 : 0,
-            .color = dui_env_color(data.kind, data.disabled ? ENV_SHADE_DISABLED_TEXT : ENV_SHADE_TEXT));
+            .color = element->foreground.current,
+        );
     }
 
     return result;
