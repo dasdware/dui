@@ -14,6 +14,7 @@ DUI_Environment* dui_env()
         environment.primary_shades.background_shade = SHADE_950;
         environment.primary_shades.text_shade = SHADE_50;
         environment.primary_shades.disabled_text_shade = SHADE_500;
+        environment.primary_shades.label_shade = SHADE_500;
         environment.primary_shades.normal_shade = SHADE_700;
         environment.primary_shades.hover_shade = SHADE_900;
         environment.primary_shades.down_shade = SHADE_950;
@@ -23,6 +24,7 @@ DUI_Environment* dui_env()
         environment.secondary_shades.background_shade = SHADE_950;
         environment.secondary_shades.text_shade = SHADE_50;
         environment.secondary_shades.disabled_text_shade = SHADE_400;
+        environment.secondary_shades.label_shade = SHADE_300;
         environment.secondary_shades.normal_shade = SHADE_600;
         environment.secondary_shades.hover_shade = SHADE_700;
         environment.secondary_shades.down_shade = SHADE_800;
@@ -122,6 +124,8 @@ Color dui_env_color(DUI_EnvironmentColorKind kind, DUI_EnvironmentColorShade sha
         return dui_palette_color(shades->palette, shades->text_shade);
     case ENV_SHADE_DISABLED_TEXT:
         return dui_palette_color(shades->palette, shades->disabled_text_shade);
+    case ENV_SHADE_LABEL:
+        return dui_palette_color(shades->palette, shades->label_shade);
     case ENV_SHADE_NORMAL:
         return dui_palette_color(shades->palette, shades->normal_shade);
     case ENV_SHADE_HOVER:

@@ -13,6 +13,7 @@ typedef struct
     DUI_Shade background_shade;
     DUI_Shade text_shade;
     DUI_Shade disabled_text_shade;
+    DUI_Shade label_shade;
     DUI_Shade normal_shade;
     DUI_Shade hover_shade;
     DUI_Shade down_shade;
@@ -31,6 +32,7 @@ typedef enum
     ENV_SHADE_BACKGROUND,
     ENV_SHADE_TEXT,
     ENV_SHADE_DISABLED_TEXT,
+    ENV_SHADE_LABEL,
     ENV_SHADE_NORMAL,
     ENV_SHADE_HOVER,
     ENV_SHADE_DOWN,
