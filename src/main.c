@@ -28,17 +28,19 @@ int main(void)
                 {
                     dui_label("Buttons");
 
-                    dui_button(.caption = "Secondary");
-                    dui_button(.caption = "Secondary (disabled)", .disabled = true);
-                    dui_button(.caption = "Primary", .kind = ENV_PRIMARY);
-                    dui_button(.caption = "Primary (disabled)", .kind = ENV_PRIMARY, .disabled = true);
+                    dui_button(.caption = "Default");
+                    dui_button(.caption = "Secondary", .kind = DUI_SECONDARY);
+                    dui_button(.caption = "Primary", .kind = DUI_PRIMARY);
+                    dui_button(.caption = "Disabled", .disabled = true);
 
                     dui_label("Labels");
-                    dui_label("Secondary");
-                    dui_label("Primary", .kind = ENV_PRIMARY);
+                    dui_label("Default");
+                    dui_label("Secondary", .kind = DUI_SECONDARY);
+                    dui_label("Primary", .kind = DUI_PRIMARY);
 
 
-                    if (dui_button(.caption = "Exit", .kind = ENV_PRIMARY, .opposite = true))
+
+                    if (dui_button(.caption = "Exit", .kind = DUI_PRIMARY, .opposite = true))
                     {
                         break;
                     }

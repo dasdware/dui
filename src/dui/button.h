@@ -6,12 +6,20 @@
 #define DUI_BUTTON_H
 
 #include <dui/animation.h>
+#include <dui/colors.h>
 #include <dui/context.h>
-#include <dui/environment.h>
 #include <dui/layout.h>
 
-typedef DUI_EnvironmentColorKind DUI_ButtonKind;
+// button theming
+#define DUI_BUTTON_BG(kind) DUI_PALETTE_DISPATCH(kind, DUI_PRIMARY_COLOR(800), DUI_SECONDARY_COLOR(800), DUI_DEFAULT_COLOR(600))
+#define DUI_BUTTON_BG_HOVER(kind) DUI_PALETTE_DISPATCH(kind, DUI_PRIMARY_COLOR(900),  DUI_SECONDARY_COLOR(900), DUI_DEFAULT_COLOR(700))
+#define DUI_BUTTON_BG_DOWN(kind) DUI_PALETTE_DISPATCH(kind, DUI_PRIMARY_COLOR(950), DUI_SECONDARY_COLOR(950), DUI_DEFAULT_COLOR(800))
+#define DUI_BUTTON_BG_DISABLED(kind) DUI_DEFAULT_COLOR(600)
 
+#define DUI_BUTTON_FG(kind) DUI_PALETTE_DISPATCH(kind, DUI_PRIMARY_COLOR(50), DUI_SECONDARY_COLOR(50), DUI_DEFAULT_COLOR(50))
+#define DUI_BUTTON_FG_DISABLED(kind) DUI_DEFAULT_COLOR(400)
+
+typedef DUI_PaletteKind DUI_ButtonKind;
 
 typedef struct
 {

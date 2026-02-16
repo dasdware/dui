@@ -33,13 +33,13 @@ bool dui_button_impl(const int id, const DUI_ButtonData data)
     {
         if (data.disabled)
         {
-            element->background = dui_ca_create(dui_env_color(ENV_DEFAULT, ENV_SHADE_NORMAL));
-            element->foreground = dui_ca_create(dui_env_color(ENV_DEFAULT, ENV_SHADE_DISABLED_TEXT));
+            element->background = dui_ca_create(DUI_BUTTON_BG_DISABLED(data.kind));
+            element->foreground = dui_ca_create(DUI_BUTTON_FG_DISABLED(data.kind));
             element->state = BUTTON_DISABLED;
         } else
         {
-            element->background = dui_ca_create(dui_env_color(data.kind, ENV_SHADE_NORMAL));
-            element->foreground = dui_ca_create(dui_env_color(data.kind, ENV_SHADE_TEXT));
+            element->background = dui_ca_create(DUI_BUTTON_BG(data.kind));
+            element->foreground = dui_ca_create(DUI_BUTTON_FG(data.kind));
             element->state = BUTTON_NORMAL;
         }
     }
@@ -47,14 +47,14 @@ bool dui_button_impl(const int id, const DUI_ButtonData data)
     if (data.disabled && element->state != BUTTON_DISABLED)
     {
 
-        dui_ca_start(&element->background, dui_env_color(ENV_DEFAULT, ENV_SHADE_NORMAL), 0.1);
-        dui_ca_start(&element->foreground, dui_env_color(ENV_DEFAULT, ENV_SHADE_DISABLED_TEXT), 0.1);
+        dui_ca_start(&element->background, DUI_BUTTON_BG_DISABLED(data.kind), 0.1);
+        dui_ca_start(&element->foreground, DUI_BUTTON_FG_DISABLED(data.kind), 0.1);
         element->state = BUTTON_DISABLED;
     }
     if (!data.disabled && element->state == BUTTON_DISABLED)
     {
-        dui_ca_start(&element->background, dui_env_color(data.kind, ENV_SHADE_NORMAL), 0.1);
-        dui_ca_start(&element->foreground, dui_env_color(data.kind, ENV_SHADE_TEXT), 0.1);
+        dui_ca_start(&element->background, DUI_BUTTON_BG(data.kind), 0.1);
+        dui_ca_start(&element->foreground, DUI_BUTTON_FG(data.kind), 0.1);
         element->state = BUTTON_NORMAL;
     }
 
@@ -72,7 +72,7 @@ bool dui_button_impl(const int id, const DUI_ButtonData data)
             }
 
             element->state = BUTTON_NORMAL;
-            dui_ca_start(&element->background, dui_env_color(data.kind, ENV_SHADE_NORMAL), 0.1);
+            dui_ca_start(&element->background, DUI_BUTTON_BG(data.kind), 0.1);
         }
 
         if (CheckCollisionPointRec(GetMousePosition(), bounds_data.bounds))
@@ -80,13 +80,13 @@ bool dui_button_impl(const int id, const DUI_ButtonData data)
             if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
             {
                 element->state = BUTTON_DOWN;
-                dui_ca_start(&element->background, dui_env_color(data.kind, ENV_SHADE_DOWN), 0.1);
+                dui_ca_start(&element->background, DUI_BUTTON_BG_DOWN(data.kind), 0.1);
                 dui_env_focus(element);
             }
             if (element->state != BUTTON_HOVER && element->state != BUTTON_DOWN)
             {
                 element->state = BUTTON_HOVER;
-                dui_ca_start(&element->background, dui_env_color(data.kind, ENV_SHADE_HOVER), 0.1);
+                dui_ca_start(&element->background, DUI_BUTTON_BG_HOVER(data.kind), 0.1);
             }
         }
         else
@@ -94,7 +94,7 @@ bool dui_button_impl(const int id, const DUI_ButtonData data)
             if (element->state == BUTTON_HOVER)
             {
                 element->state = BUTTON_NORMAL;
-                dui_ca_start(&element->background, dui_env_color(data.kind, ENV_SHADE_NORMAL), 0.1);
+                dui_ca_start(&element->background, DUI_BUTTON_BG(data.kind), 0.1);
             }
         }
     }
@@ -102,7 +102,7 @@ bool dui_button_impl(const int id, const DUI_ButtonData data)
     DrawRectangleRec(bounds_data.bounds, element->background.current);
     if (!data.disabled && dui_env_has_focus(element))
     {
-        dui_env_draw_focus_frame(bounds_data.bounds, dui_env_color(data.kind, ENV_SHADE_FOCUS_FRAME));
+        dui_env_draw_focus_frame(bounds_data.bounds, DUI_FOCUS_COLOR(data.kind));
         if (IsKeyPressed(KEY_SPACE) ||IsKeyPressed(KEY_ENTER))
         {
             result = true;

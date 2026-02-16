@@ -9,46 +9,11 @@
 
 typedef struct
 {
-    const DUI_Palette* palette;
-    DUI_Shade background_shade;
-    DUI_Shade text_shade;
-    DUI_Shade disabled_text_shade;
-    DUI_Shade label_shade;
-    DUI_Shade normal_shade;
-    DUI_Shade hover_shade;
-    DUI_Shade down_shade;
-    DUI_Shade focus_frame_shade;
-} DUI_PaletteShades;
-
-typedef enum
-{
-    ENV_DEFAULT,
-    ENV_PRIMARY,
-    ENV_SECONDARY,
-} DUI_EnvironmentColorKind;
-
-typedef enum
-{
-    ENV_SHADE_BACKGROUND,
-    ENV_SHADE_TEXT,
-    ENV_SHADE_DISABLED_TEXT,
-    ENV_SHADE_LABEL,
-    ENV_SHADE_NORMAL,
-    ENV_SHADE_HOVER,
-    ENV_SHADE_DOWN,
-    ENV_SHADE_FOCUS_FRAME,
-} DUI_EnvironmentColorShade;
-
-typedef struct
-{
     Arena memory;
     bool initialized;
 
     DUI_ContextElement root_context;
     DUI_ContextElement* context_stack_top;
-
-    DUI_PaletteShades primary_shades;
-    DUI_PaletteShades secondary_shades;
 
     int focus_frame_offset;
     int focus_frame_width;
@@ -76,8 +41,6 @@ void dui_env_focus_impl(DUI_Element* element);
 
 #define dui_env_has_focus(element) dui_env_has_focus_impl((DUI_Element*) (element))
 bool dui_env_has_focus_impl(const DUI_Element* element);
-
-Color dui_env_color(DUI_EnvironmentColorKind kind, DUI_EnvironmentColorShade shade);
 
 int dui_env_next_element_kind();
 

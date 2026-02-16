@@ -1,10 +1,13 @@
 #ifndef DUI_LABEL_H
 #define DUI_LABEL_H
 
-#include <dui/environment.h>
+#include <dui/colors.h>
 #include <dui/layout.h>
 
-typedef DUI_EnvironmentColorKind DUI_LabelKind;
+// Label theming
+#define DUI_LABEL_TEXT_COLOR(kind) DUI_PALETTE_DISPATCH(kind, DUI_PRIMARY_COLOR(500), DUI_SECONDARY_COLOR(500), DUI_DEFAULT_COLOR(300))
+
+typedef DUI_PaletteKind DUI_LabelKind;
 
 typedef struct
 {
