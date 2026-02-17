@@ -35,27 +35,27 @@ bool dui_button_impl(const int id, const DUI_ButtonData data)
         {
             element->background = dui_ca_create(DUI_BUTTON_BG_DISABLED(data.kind));
             element->foreground = dui_ca_create(DUI_BUTTON_FG_DISABLED(data.kind));
-            element->state = BUTTON_DISABLED;
+            element->state = STATE_DISABLED;
         } else
         {
             element->background = dui_ca_create(DUI_BUTTON_BG(data.kind));
             element->foreground = dui_ca_create(DUI_BUTTON_FG(data.kind));
-            element->state = BUTTON_NORMAL;
+            element->state = STATE_NORMAL;
         }
     }
 
-    if (data.disabled && element->state != BUTTON_DISABLED)
+    if (data.disabled && element->state != STATE_DISABLED)
     {
 
         dui_ca_start(&element->background, DUI_BUTTON_BG_DISABLED(data.kind), 0.1);
         dui_ca_start(&element->foreground, DUI_BUTTON_FG_DISABLED(data.kind), 0.1);
-        element->state = BUTTON_DISABLED;
+        element->state = STATE_DISABLED;
     }
-    if (!data.disabled && element->state == BUTTON_DISABLED)
+    if (!data.disabled && element->state == STATE_DISABLED)
     {
         dui_ca_start(&element->background, DUI_BUTTON_BG(data.kind), 0.1);
         dui_ca_start(&element->foreground, DUI_BUTTON_FG(data.kind), 0.1);
-        element->state = BUTTON_NORMAL;
+        element->state = STATE_NORMAL;
     }
 
     dui_ca_update(&element->background);
@@ -66,12 +66,12 @@ bool dui_button_impl(const int id, const DUI_ButtonData data)
     {
         if (IsMouseButtonReleased(MOUSE_LEFT_BUTTON))
         {
-            if (element->state == BUTTON_DOWN)
+            if (element->state == STATE_DOWN)
             {
                 result = true;
             }
 
-            element->state = BUTTON_NORMAL;
+            element->state = STATE_NORMAL;
             dui_ca_start(&element->background, DUI_BUTTON_BG(data.kind), 0.1);
         }
 
@@ -79,21 +79,21 @@ bool dui_button_impl(const int id, const DUI_ButtonData data)
         {
             if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
             {
-                element->state = BUTTON_DOWN;
+                element->state = STATE_DOWN;
                 dui_ca_start(&element->background, DUI_BUTTON_BG_DOWN(data.kind), 0.1);
                 dui_env_focus(element);
             }
-            if (element->state != BUTTON_HOVER && element->state != BUTTON_DOWN)
+            if (element->state != STATE_HOVER && element->state != STATE_DOWN)
             {
-                element->state = BUTTON_HOVER;
+                element->state = STATE_HOVER;
                 dui_ca_start(&element->background, DUI_BUTTON_BG_HOVER(data.kind), 0.1);
             }
         }
         else
         {
-            if (element->state == BUTTON_HOVER)
+            if (element->state == STATE_HOVER)
             {
-                element->state = BUTTON_NORMAL;
+                element->state = STATE_NORMAL;
                 dui_ca_start(&element->background, DUI_BUTTON_BG(data.kind), 0.1);
             }
         }
@@ -116,7 +116,7 @@ bool dui_button_impl(const int id, const DUI_ButtonData data)
             bounds_data.bounds,
             .horizontal_alignment = ALIGN_CENTER,
             .vertical_alignment = ALIGN_CENTER,
-            .offset_y = (element->state == BUTTON_DOWN) ? 1 : 0,
+            .offset_y = (element->state == STATE_DOWN) ? 1 : 0,
             .color = element->foreground.current,
         );
     }

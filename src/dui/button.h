@@ -9,6 +9,7 @@
 #include <dui/colors.h>
 #include <dui/context.h>
 #include <dui/layout.h>
+#include <dui/types.h>
 
 // button theming
 #define DUI_BUTTON_BG(kind) DUI_SHADE_DISPATCH(kind, 800, 800, 600)
@@ -30,21 +31,13 @@ typedef struct
     bool disabled;
 } DUI_ButtonData;
 
-typedef enum
-{
-    BUTTON_NORMAL,
-    BUTTON_HOVER,
-    BUTTON_DOWN,
-    BUTTON_DISABLED,
-} DUI_Button_State;
-
 typedef struct
 {
     DUI_Element element;
 
     DUI_ColorAnimation background;
     DUI_ColorAnimation foreground;
-    DUI_Button_State state;
+    DUI_State state;
 } DUI_ButtonElement;
 
 #define dui_button(...) dui_button_impl(__COUNTER__, (DUI_ButtonData) { __VA_ARGS__ })

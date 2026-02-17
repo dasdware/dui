@@ -14,4 +14,12 @@ typedef enum
 #define ALIGN_RIGHT ALIGN_END
 #define ALIGN_BOTTOM ALIGN_END
 
+typedef enum
+{
+    STATE_NORMAL,
+    STATE_HOVER,
+    STATE_DOWN,
+    STATE_DISABLED,
+} DUI_State;
+
 #endif // DUI_TYPES_H
