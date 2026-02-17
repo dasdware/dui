@@ -289,6 +289,8 @@ typedef enum {
 
 #define DUI_PALETTE_DISPATCH(kind, primary_value, secondary_value, default_value) \
     (((kind) == DUI_PRIMARY) ? (primary_value) : ((kind) == DUI_SECONDARY) ? (secondary_value) : (default_value))
+#define DUI_SHADE_DISPATCH(kind, primary_shade, secondary_shade, default_shade) \
+    DUI_PALETTE_DISPATCH(kind, DUI_PRIMARY_COLOR(primary_shade), DUI_SECONDARY_COLOR(secondary_shade), DUI_DEFAULT_COLOR(default_shade))
 
 #define DUI_BACKGROUND_COLOR DUI_DEFAULT_COLOR(950)
 #define DUI_FOCUS_COLOR(kind) DUI_PALETTE_DISPATCH(kind, DUI_PRIMARY_COLOR(200), DUI_SECONDARY_COLOR(200), DUI_DEFAULT_COLOR(200))

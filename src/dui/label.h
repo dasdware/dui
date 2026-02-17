@@ -5,7 +5,7 @@
 #include <dui/layout.h>
 
 // Label theming
-#define DUI_LABEL_TEXT_COLOR(kind) DUI_PALETTE_DISPATCH(kind, DUI_PRIMARY_COLOR(500), DUI_SECONDARY_COLOR(500), DUI_DEFAULT_COLOR(300))
+#define DUI_LABEL_TEXT_COLOR(kind) DUI_SHADE_DISPATCH(kind, 500, 500, 300)
 
 typedef DUI_PaletteKind DUI_LabelKind;
 
