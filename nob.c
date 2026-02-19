@@ -82,6 +82,7 @@ bool build_main()
     nob_cmd_append(&cmd, "-L./" RAYLIB_BUILD_DIR);
     nob_cmd_append(&cmd, "./src/dui/animation.c");
     nob_cmd_append(&cmd, "./src/dui/button.c");
+    nob_cmd_append(&cmd, "./src/dui/checkbox.c");
     nob_cmd_append(&cmd, "./src/dui/context.c");
     nob_cmd_append(&cmd, "./src/dui/environment.c");
     nob_cmd_append(&cmd, "./src/dui/keyboard.c");
