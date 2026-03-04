@@ -19,8 +19,6 @@
 
 #define DUI_CHECKBOX_CHECK(kind) DUI_SHADE_DISPATCH(kind, 100, 100, 100)
 
-typedef DUI_PaletteKind DUI_CheckboxKind;
-
 typedef enum
 {
     CHECK_UNCHECKED,
@@ -33,7 +31,7 @@ typedef struct
     DUI_LAYOUT_DATA_FIELDS;
 
     const char* caption;
-    DUI_CheckboxKind kind;
+    DUI_Kind kind;
     bool* checked;
     bool disabled;
 } DUI_CheckboxData;

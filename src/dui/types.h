@@ -3,6 +3,12 @@
 
 #include <dui/context.h>
 
+typedef enum {
+    DUI_DEFAULT,
+    DUI_PRIMARY,
+    DUI_SECONDARY,
+} DUI_Kind;
+
 typedef enum
 {
     ALIGN_DEFAULT,

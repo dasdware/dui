@@ -2,6 +2,7 @@
 #define DUI_COLORS_H
 
 #include <raylib.h>
+#include <dui/types.h>
 
 #define DUI_COLOR(hex) CLITERAL(Color){ (hex >> 16) & 0xFF, (hex >> 8) & 0xFF, hex & 0xFF, 0xFF }
 
@@ -281,11 +282,6 @@
 #define DUI_DEFAULT_PALETTE DUI_PALETTE_SLATE
 #define DUI_DEFAULT_COLOR(shade) DUI_PALETTE_COLOR(DUI_DEFAULT_PALETTE, shade)
 
-typedef enum {
-    DUI_DEFAULT,
-    DUI_PRIMARY,
-    DUI_SECONDARY,
-} DUI_PaletteKind;
 
 #define DUI_PALETTE_DISPATCH(kind, primary_value, secondary_value, default_value) \
     (((kind) == DUI_PRIMARY) ? (primary_value) : ((kind) == DUI_SECONDARY) ? (secondary_value) : (default_value))
@@ -294,7 +290,5 @@ typedef enum {
 
 #define DUI_BACKGROUND_COLOR DUI_DEFAULT_COLOR(950)
 #define DUI_FOCUS_COLOR(kind) DUI_PALETTE_DISPATCH(kind, DUI_PRIMARY_COLOR(200), DUI_SECONDARY_COLOR(200), DUI_DEFAULT_COLOR(200))
-
-
 
 #endif //DUI_COLORS_H
