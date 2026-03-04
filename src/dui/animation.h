@@ -4,11 +4,7 @@
 #include <stdbool.h>
 #include <raylib.h>
 
-// - Animations
-
-// -- Colors
-typedef struct
-{
+typedef struct {
     Color from;
     Color to;
     Color current;

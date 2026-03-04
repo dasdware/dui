@@ -3,19 +3,15 @@
 
 #include "raylib.h"
 
-bool dui_is_key_down_impl(const int key, DUI_IsKeyDownData data)
-{
-    if (!data.state)
-    {
+bool dui_is_key_down_impl(const int key, DUI_IsKeyDownData data) {
+    if (!data.state) {
         return IsKeyDown(key);
     }
 
-    if (data.initialDelay == 0.0f)
-    {
+    if (data.initialDelay == 0.0f) {
         data.initialDelay = 0.5f;
     }
-    if (data.delay == 0.0f)
-    {
+    if (data.delay == 0.0f) {
         data.delay = 0.075f;
     }
 
@@ -35,31 +31,21 @@ bool dui_is_key_down_impl(const int key, DUI_IsKeyDownData data)
     return false;
 }
 
-void dui_handle_global_keys()
-{
+void dui_handle_global_keys() {
     const DUI_Environment* env = dui_env();
 
     static float tabKeyDownState = 0.0f;
-    if (dui_is_key_down(KEY_TAB, .state = &tabKeyDownState))
-    {
-        if (env->focused_element != NULL)
-        {
-            if (IsKeyDown(KEY_LEFT_SHIFT) || IsKeyDown(KEY_RIGHT_SHIFT))
-            {
+    if (dui_is_key_down(KEY_TAB, .state = &tabKeyDownState)) {
+        if (env->focused_element != NULL) {
+            if (IsKeyDown(KEY_LEFT_SHIFT) || IsKeyDown(KEY_RIGHT_SHIFT)) {
                 dui_env_focus(env->focused_element->tabOrderPrev);
-            } else
-            {
+            } else {
                 dui_env_focus(env->focused_element->tabOrderNext);
             }
-        }
-        else
-        {
-            if (IsKeyDown(KEY_LEFT_SHIFT) || IsKeyDown(KEY_RIGHT_SHIFT))
-            {
+        } else {
+            if (IsKeyDown(KEY_LEFT_SHIFT) || IsKeyDown(KEY_RIGHT_SHIFT)) {
                 dui_env_focus(dui_env()->root_context.tabOrderBack);
-            }
-            else
-            {
+            } else {
                 dui_env_focus(dui_env()->root_context.tabOrderFront);
             }
         }

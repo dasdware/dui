@@ -20,8 +20,7 @@
 #define DUI_BUTTON_FG(kind) DUI_SHADE_DISPATCH(kind, 50, 50, 50)
 #define DUI_BUTTON_FG_DISABLED(kind) DUI_DEFAULT_COLOR(400)
 
-typedef struct
-{
+typedef struct {
     DUI_LAYOUT_DATA_FIELDS;
 
     const char* caption;
@@ -29,8 +28,7 @@ typedef struct
     bool disabled;
 } DUI_ButtonData;
 
-typedef struct
-{
+typedef struct {
     DUI_Element element;
 
     DUI_ColorAnimation background;

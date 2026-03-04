@@ -12,7 +12,7 @@
 static Nob_Cmd cmd = {0};
 
 bool build_raylib() {
-    static const char *raylib_modules[] = {
+    static const char* raylib_modules[] = {
         "rcore",
         "raudio",
         "rglfw",
@@ -34,8 +34,8 @@ bool build_raylib() {
 
     // Add raylib modules
     for (size_t i = 0; i < NOB_ARRAY_LEN(raylib_modules); ++i) {
-        const char *input_path = nob_temp_sprintf(RAYLIB_SRC_DIR "%s.c", raylib_modules[i]);
-        const char *output_path = nob_temp_sprintf(RAYLIB_BUILD_DIR "%s.o", raylib_modules[i]);
+        const char* input_path = nob_temp_sprintf(RAYLIB_SRC_DIR "%s.c", raylib_modules[i]);
+        const char* output_path = nob_temp_sprintf(RAYLIB_BUILD_DIR "%s.o", raylib_modules[i]);
 
         nob_da_append(&object_files, output_path);
 
@@ -54,16 +54,18 @@ bool build_raylib() {
         }
     }
 
-    if (!nob_procs_wait(procs)) nob_return_defer(false);
+    if (!nob_procs_wait(procs))
+        nob_return_defer(false);
 
-    const char *libraylib_path = RAYLIB_BUILD_DIR "/libraylib.a";
+    const char* libraylib_path = RAYLIB_BUILD_DIR "/libraylib.a";
 
     if (nob_needs_rebuild(libraylib_path, object_files.items, object_files.count)) {
         nob_cmd_append(&cmd, "ar", "-crs", libraylib_path);
         for (size_t i = 0; i < object_files.count; ++i) {
             nob_cmd_append(&cmd, object_files.items[i]);
         }
-        if (!nob_cmd_run(&cmd)) nob_return_defer(false);
+        if (!nob_cmd_run(&cmd))
+            nob_return_defer(false);
     }
 
 defer:
@@ -72,8 +74,7 @@ defer:
     return result;
 }
 
-bool build_main()
-{
+bool build_main() {
     nob_cmd_append(&cmd, "gcc");
     nob_cmd_append(&cmd, "-Wall", "-Wextra", "-ggdb", "-static", "-std=c99");
     nob_cmd_append(&cmd, "-I./src/");
@@ -96,28 +97,24 @@ bool build_main()
     nob_cmd_append(&cmd, "-lm");
     nob_cmd_append(&cmd, "-o", MAIN_OUTPUT);
 
-    if (!nob_cmd_run(&cmd))
-    {
+    if (!nob_cmd_run(&cmd)) {
         return false;
     }
 
     return true;
 }
 
-int main(int argc, char **argv)
-{
+int main(int argc, char** argv) {
     NOB_GO_REBUILD_URSELF(argc, argv);
 
     nob_mkdir_if_not_exists(BUILD_DIR);
 
-    if (!build_raylib() ||  !build_main())
-    {
+    if (!build_raylib() || !build_main()) {
         return 1;
     }
 
     nob_cmd_append(&cmd, MAIN_OUTPUT);
-    if (!nob_cmd_run(&cmd))
-    {
+    if (!nob_cmd_run(&cmd)) {
         return 1;
     }
 

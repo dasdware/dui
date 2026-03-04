@@ -7,8 +7,7 @@
 #include <dui/colors.h>
 #include <dui/context.h>
 
-typedef struct
-{
+typedef struct {
     Arena memory;
     bool initialized;
 
@@ -25,7 +24,7 @@ typedef struct
     DUI_Element* focused_element;
 } DUI_Environment;
 
-DUI_Environment *dui_env();
+DUI_Environment* dui_env();
 void dui_env_begin();
 void dui_env_end();
 

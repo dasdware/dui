@@ -2,11 +2,9 @@
 #include <dui/environment.h>
 #include <dui/text.h>
 
-bool dui_checkbox_impl(const int id, const DUI_CheckboxData data)
-{
+bool dui_checkbox_impl(const int id, const DUI_CheckboxData data) {
     static int element_type_checkbox = 0;
-    if (element_type_checkbox == 0)
-    {
+    if (element_type_checkbox == 0) {
         element_type_checkbox = dui_env_next_element_type();
     }
 
@@ -30,16 +28,12 @@ bool dui_checkbox_impl(const int id, const DUI_CheckboxData data)
         .anchor = data.anchor,
         .opposite = data.opposite,
         .remaining = data.remaining,
-        ))
-    {
-        if (data.disabled)
-        {
+    )) {
+        if (data.disabled) {
             element->text_color = dui_ca_create(DUI_CHECKBOX_TEXT_DISABLED(data.kind));
             element->box_color = dui_ca_create(DUI_CHECKBOX_BOX_DISABLED(data.kind));
             element->state = STATE_DISABLED;
-        }
-        else
-        {
+        } else {
             element->text_color = dui_ca_create(DUI_CHECKBOX_TEXT(data.kind));
             element->box_color = dui_ca_create(DUI_CHECKBOX_BOX(data.kind));
             element->state = STATE_NORMAL;
@@ -50,19 +44,18 @@ bool dui_checkbox_impl(const int id, const DUI_CheckboxData data)
     dui_ca_update(&element->text_color);
     dui_ca_update(&element->box_color);
 
-    if (data.checked)
-    {
+    if (data.checked) {
         element->check_state = (*data.checked) ? CHECK_CHECKED : CHECK_UNCHECKED;
     }
 
-    const DUI_NextState next_state = dui_ctx_next_state(element->state,
-                                                    element->element.bounds, data.disabled,
-                                                    &element->element);
-    if (next_state.state != element->state)
-    {
+    const DUI_NextState next_state = dui_ctx_next_state(
+        element->state,
+        element->element.bounds, data.disabled,
+        &element->element
+    );
+    if (next_state.state != element->state) {
         element->state = next_state.state;
-        switch (element->state)
-        {
+        switch (element->state) {
         case STATE_NORMAL:
             dui_ca_start(&element->text_color, DUI_CHECKBOX_TEXT(data.kind), 0.1);
             dui_ca_start(&element->box_color, DUI_CHECKBOX_BOX(data.kind), 0.1);
@@ -82,14 +75,10 @@ bool dui_checkbox_impl(const int id, const DUI_CheckboxData data)
         }
     }
 
-    if (next_state.activated)
-    {
-        if (element->check_state != CHECK_CHECKED)
-        {
+    if (next_state.activated) {
+        if (element->check_state != CHECK_CHECKED) {
             element->check_state = CHECK_CHECKED;
-        }
-        else
-        {
+        } else {
             element->check_state = CHECK_UNCHECKED;
         }
     }
@@ -98,25 +87,23 @@ bool dui_checkbox_impl(const int id, const DUI_CheckboxData data)
     box_bounds.width = box_bounds.height;
 
     DrawRectangleRec(box_bounds, element->box_color.current);
-    if (element->check_state == CHECK_CHECKED)
-    {
+    if (element->check_state == CHECK_CHECKED) {
         const Rectangle mark_bounds = dui_lay_padding_all(box_bounds, 1);
         DrawLineEx(
-            CLITERAL(Vector2) { mark_bounds.x, mark_bounds.y + mark_bounds.height / 2 },
-            CLITERAL(Vector2) { mark_bounds.x + mark_bounds.width / 2.25, mark_bounds.y + mark_bounds.height },
+            CLITERAL(Vector2){mark_bounds.x, mark_bounds.y + mark_bounds.height / 2},
+            CLITERAL(Vector2){mark_bounds.x + mark_bounds.width / 2.25, mark_bounds.y + mark_bounds.height},
             2,
             DUI_CHECKBOX_CHECK(data.kind)
         );
         DrawLineEx(
-            CLITERAL(Vector2) { mark_bounds.x + mark_bounds.width / 2.25, mark_bounds.y + mark_bounds.height },
-            CLITERAL(Vector2) { mark_bounds.x + mark_bounds.width, mark_bounds.y },
+            CLITERAL(Vector2){mark_bounds.x + mark_bounds.width / 2.25, mark_bounds.y + mark_bounds.height},
+            CLITERAL(Vector2){mark_bounds.x + mark_bounds.width, mark_bounds.y},
             2,
             DUI_CHECKBOX_CHECK(data.kind)
         );
     }
 
-    if (data.caption)
-    {
+    if (data.caption) {
         const Rectangle caption_bounds = dui_lay_padding(element->element.bounds, 7, 0, 0, 0);
         dui_text(
             data.caption,
@@ -127,8 +114,7 @@ bool dui_checkbox_impl(const int id, const DUI_CheckboxData data)
         );
     }
 
-    if (data.checked)
-    {
+    if (data.checked) {
         *data.checked = (element->check_state == CHECK_CHECKED);
     }
 

@@ -7,8 +7,7 @@
 
 Vector2 dui_text_measure(const char* text);
 
-typedef struct
-{
+typedef struct {
     DUI_Alignment horizontal_alignment;
     DUI_Alignment vertical_alignment;
     Color color;

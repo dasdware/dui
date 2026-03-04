@@ -3,12 +3,10 @@
 
 #include <stdbool.h>
 
-typedef struct
-{
+typedef struct {
     float initialDelay;
     float delay;
-    float *state;
-
+    float* state;
 } DUI_IsKeyDownData;
 
 #define dui_is_key_down(key, ...) \

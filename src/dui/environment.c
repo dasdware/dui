@@ -3,11 +3,9 @@
 #include <dui/environment.h>
 #include <dui/keyboard.h>
 
-DUI_Environment* dui_env()
-{
+DUI_Environment* dui_env() {
     static DUI_Environment environment = {0};
-    if (!environment.initialized)
-    {
+    if (!environment.initialized) {
         environment.context_stack_top = &environment.root_context;
 
         environment.focus_frame_offset = 0;
@@ -22,14 +20,12 @@ DUI_Environment* dui_env()
     return &environment;
 }
 
-int dui_env_spacing(const float n)
-{
+int dui_env_spacing(const float n) {
     const DUI_Environment* env = dui_env();
     return round(n / 4 * env->font_height);
 }
 
-void dui_env_load_font(const char* file_name, const int size, const float spacing)
-{
+void dui_env_load_font(const char* file_name, const int size, const float spacing) {
     DUI_Environment* env = dui_env();
     UnloadFont(env->font);
 
@@ -38,13 +34,11 @@ void dui_env_load_font(const char* file_name, const int size, const float spacin
     env->font = LoadFontEx(file_name, env->font_height, NULL, 0);
 }
 
-void dui_env_clear_background()
-{
+void dui_env_clear_background() {
     ClearBackground(DUI_BACKGROUND_COLOR);
 }
 
-void dui_env_draw_focus_frame(const Rectangle bounds, const Color color)
-{
+void dui_env_draw_focus_frame(const Rectangle bounds, const Color color) {
     const DUI_Environment* env = dui_env();
 
     const Rectangle focus_frame_bounds = {
@@ -56,29 +50,24 @@ void dui_env_draw_focus_frame(const Rectangle bounds, const Color color)
     DrawRectangleLinesEx(focus_frame_bounds, env->focus_frame_width, color);
 }
 
-void dui_env_focus_impl(DUI_Element* element)
-{
+void dui_env_focus_impl(DUI_Element* element) {
     dui_env()->focused_element = element;
 }
 
-bool dui_env_has_focus_impl(const DUI_Element* element)
-{
+bool dui_env_has_focus_impl(const DUI_Element* element) {
     return dui_env()->focused_element == element;
 }
 
-void dui_env_begin()
-{
+void dui_env_begin() {
     BeginDrawing();
     dui_env_clear_background();
 
     dui_env()->root_context.indices.count = 0;
 }
 
-void dui_env_end()
-{
+void dui_env_end() {
     const DUI_Element* focused_element = dui_env()->focused_element;
-    if (focused_element)
-    {
+    if (focused_element) {
         dui_env_draw_focus_frame(focused_element->bounds, DUI_FOCUS_COLOR(focused_element->kind));
     }
 
@@ -87,8 +76,7 @@ void dui_env_end()
     dui_handle_global_keys();
 }
 
-int dui_env_next_element_type()
-{
+int dui_env_next_element_type() {
     static int current_element_type = 0;
     current_element_type += 1;
     return current_element_type;

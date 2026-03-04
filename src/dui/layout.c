@@ -9,8 +9,7 @@
 static DUI_Layout layout_stack[DUI_LAYOUT_STACK_CAPACITY] = {0};
 static size_t layout_stack_count = 0;
 
-Rectangle dui_lay_padding(const Rectangle bounds, const int left, const int top, const int right, const int bottom)
-{
+Rectangle dui_lay_padding(const Rectangle bounds, const int left, const int top, const int right, const int bottom) {
     Rectangle result = bounds;
     result.x += dui_env_spacing(left);
     result.y += dui_env_spacing(top);
@@ -19,8 +18,7 @@ Rectangle dui_lay_padding(const Rectangle bounds, const int left, const int top,
     return result;
 }
 
-Rectangle dui_lay_center(const Rectangle bounds, const int width, const int height)
-{
+Rectangle dui_lay_center(const Rectangle bounds, const int width, const int height) {
     Rectangle result = {0};
     result.x = bounds.x + (bounds.width - width) / 2;
     result.y = bounds.y + (bounds.height - height) / 2;
@@ -29,8 +27,7 @@ Rectangle dui_lay_center(const Rectangle bounds, const int width, const int heig
     return result;
 }
 
-DUI_Layout_BoundsData dui_lay_rectangle_impl(const DUI_Layout_Data data)
-{
+DUI_Layout_BoundsData dui_lay_rectangle_impl(const DUI_Layout_Data data) {
     NOB_ASSERT(layout_stack_count > 0);
 
     DUI_Layout* layout = &layout_stack[layout_stack_count - 1];
@@ -39,8 +36,7 @@ DUI_Layout_BoundsData dui_lay_rectangle_impl(const DUI_Layout_Data data)
         .tabOrderBack = false,
     };
 
-    switch (layout->kind)
-    {
+    switch (layout->kind) {
     case LAYOUT_SCREEN:
         result.bounds = CLITERAL(Rectangle){
             .x = 0,
@@ -51,8 +47,7 @@ DUI_Layout_BoundsData dui_lay_rectangle_impl(const DUI_Layout_Data data)
         result.bounds = dui_lay_padding_all(result.bounds, layout->as.screen.padding);
         return result;
     case LAYOUT_ANCHOR:
-        switch (data.anchor)
-        {
+        switch (data.anchor) {
         case ANCHOR_LEFT:
             result.bounds.x += layout->as.anchored.inset_left;
             result.bounds.y += layout->as.anchored.inset_top;
@@ -92,85 +87,68 @@ DUI_Layout_BoundsData dui_lay_rectangle_impl(const DUI_Layout_Data data)
         default:
             NOB_UNREACHABLE("Unknown anchor.");
         }
-    case LAYOUT_STACK:
-        {
-            int item_size = (layout->as.stack.direction == DIRECTION_HORIZONTAL)
-                ? max(data.size, data.width)
-                : max(data.size, data.height);
+    case LAYOUT_STACK: {
+        int item_size = (layout->as.stack.direction == DIRECTION_HORIZONTAL)
+                            ? max(data.size, data.width)
+                            : max(data.size, data.height);
 
-            if (data.remaining)
-            {
-                item_size = (layout->as.stack.direction == DIRECTION_HORIZONTAL)
-                    ? result.bounds.width - layout->as.stack.inset_begin - layout->as.stack.inset_end
-                    : result.bounds.height - layout->as.stack.inset_begin - layout->as.stack.inset_end;
-            }
-            else if (item_size == 0)
-            {
-                item_size = layout->as.stack.item_size;
-            }
-
-            if (layout->as.stack.direction == DIRECTION_HORIZONTAL)
-            {
-                if (data.opposite)
-                {
-                    result.bounds.x += result.bounds.width - layout->as.stack.inset_end - item_size;
-                    layout->as.stack.inset_end += item_size + layout->as.stack.gap;
-                    result.tabOrderBack = true;
-                }
-                else
-                {
-                    result.bounds.x += layout->as.stack.inset_begin;
-                    layout->as.stack.inset_begin += item_size + layout->as.stack.gap;
-                }
-                result.bounds.width = item_size;
-            }
-            else
-            {
-                if (data.opposite)
-                {
-                    result.bounds.y += result.bounds.height - layout->as.stack.inset_end - item_size;
-                    layout->as.stack.inset_end += item_size + layout->as.stack.gap;
-                    result.tabOrderBack = true;
-                }
-                else
-                {
-                    result.bounds.y += layout->as.stack.inset_begin;
-                    layout->as.stack.inset_begin += item_size + layout->as.stack.gap;
-                }
-                result.bounds.height = item_size;
-            }
-            return result;
+        if (data.remaining) {
+            item_size = (layout->as.stack.direction == DIRECTION_HORIZONTAL)
+                            ? result.bounds.width - layout->as.stack.inset_begin - layout->as.stack.inset_end
+                            : result.bounds.height - layout->as.stack.inset_begin - layout->as.stack.inset_end;
+        } else if (item_size == 0) {
+            item_size = layout->as.stack.item_size;
         }
-    case LAYOUT_SPACED:
-        {
-            const size_t count = layout->as.spaced.count;
-            const size_t gap = layout->as.spaced.gap;
-            const size_t cursor = layout->as.spaced.cursor;
-            const int weight = max(data.weight, 1);
 
-            switch (layout->as.spaced.direction)
-            {
-            case DIRECTION_HORIZONTAL:
-                {
-                    const float cell_size = 1.0 * (result.bounds.width - (count - 1) * gap) / count;
-                    result.bounds.x += cursor * (cell_size + gap);
-                    result.bounds.width = ceilf(weight * cell_size + (weight - 1) * gap);
-                    break;
-                }
-            case DIRECTION_VERTICAL:
-                {
-                    const float cell_size = 1.0 * (result.bounds.height - (count - 1) * gap) / count;
-                    result.bounds.y += cursor * (cell_size + gap);
-                    result.bounds.height = ceilf(weight * cell_size + (weight - 1) * gap);
-                    break;
-                }
-            default:
-                NOB_UNREACHABLE("Unknown spaced direction.");
+        if (layout->as.stack.direction == DIRECTION_HORIZONTAL) {
+            if (data.opposite) {
+                result.bounds.x += result.bounds.width - layout->as.stack.inset_end - item_size;
+                layout->as.stack.inset_end += item_size + layout->as.stack.gap;
+                result.tabOrderBack = true;
+            } else {
+                result.bounds.x += layout->as.stack.inset_begin;
+                layout->as.stack.inset_begin += item_size + layout->as.stack.gap;
             }
-
-            layout->as.spaced.cursor += weight;
-            return result;
+            result.bounds.width = item_size;
+        } else {
+            if (data.opposite) {
+                result.bounds.y += result.bounds.height - layout->as.stack.inset_end - item_size;
+                layout->as.stack.inset_end += item_size + layout->as.stack.gap;
+                result.tabOrderBack = true;
+            } else {
+                result.bounds.y += layout->as.stack.inset_begin;
+                layout->as.stack.inset_begin += item_size + layout->as.stack.gap;
+            }
+            result.bounds.height = item_size;
         }
+        return result;
+    }
+    case LAYOUT_SPACED: {
+        const size_t count = layout->as.spaced.count;
+        const size_t gap = layout->as.spaced.gap;
+        const size_t cursor = layout->as.spaced.cursor;
+        const int weight = max(data.weight, 1);
+
+        switch (layout->as.spaced.direction) {
+        case DIRECTION_HORIZONTAL: {
+            const float cell_size = 1.0 * (result.bounds.width - (count - 1) * gap) / count;
+            result.bounds.x += cursor * (cell_size + gap);
+            result.bounds.width = ceilf(weight * cell_size + (weight - 1) * gap);
+            break;
+        }
+        case DIRECTION_VERTICAL: {
+            const float cell_size = 1.0 * (result.bounds.height - (count - 1) * gap) / count;
+            result.bounds.y += cursor * (cell_size + gap);
+            result.bounds.height = ceilf(weight * cell_size + (weight - 1) * gap);
+            break;
+        }
+        default:
+            NOB_UNREACHABLE("Unknown spaced direction.");
+        }
+
+        layout->as.spaced.cursor += weight;
+        return result;
+    }
     case LAYOUT_RECTANGLE:
         result.bounds = layout->as.rectangle;
         return result;
@@ -179,17 +157,15 @@ DUI_Layout_BoundsData dui_lay_rectangle_impl(const DUI_Layout_Data data)
     }
 }
 
-static void dui__lay_begin(const int id, const int index, const bool tabOrderBack, const DUI_Layout layout)
-{
-    dui_ctx_begin_impl(id, CLITERAL(DUI_ContextData) { .index = index, .tabOrderBack = tabOrderBack });
+static void dui__lay_begin(const int id, const int index, const bool tabOrderBack, const DUI_Layout layout) {
+    dui_ctx_begin_impl(id, CLITERAL(DUI_ContextData){.index = index, .tabOrderBack = tabOrderBack});
 
     NOB_ASSERT(layout_stack_count < DUI_LAYOUT_STACK_CAPACITY);
     layout_stack[layout_stack_count] = layout;
     ++layout_stack_count;
 }
 
-void dui_lay_begin_screen_impl(const int id, const DUI_Layout_ScreenData data)
-{
+void dui_lay_begin_screen_impl(const int id, const DUI_Layout_ScreenData data) {
     const DUI_Layout layout = {
         .kind = LAYOUT_SCREEN,
         .parent_bounds = {0},
@@ -198,8 +174,7 @@ void dui_lay_begin_screen_impl(const int id, const DUI_Layout_ScreenData data)
     dui__lay_begin(id, data.index, false, layout);
 }
 
-void dui_lay_begin_anchored_impl(const int id, const DUI_Layout_AnchoredData data)
-{
+void dui_lay_begin_anchored_impl(const int id, const DUI_Layout_AnchoredData data) {
     const DUI_Layout_BoundsData bounds = dui__lay_rectangle_data(data);
     const DUI_Layout layout = {
         .kind = LAYOUT_ANCHOR,
@@ -216,8 +191,7 @@ void dui_lay_begin_anchored_impl(const int id, const DUI_Layout_AnchoredData dat
     dui__lay_begin(id, data.index, bounds.tabOrderBack, layout);
 }
 
-void dui_lay_begin_stack_impl(const int id, const DUI_Layout_StackData data)
-{
+void dui_lay_begin_stack_impl(const int id, const DUI_Layout_StackData data) {
     const DUI_Layout_BoundsData bounds = dui__lay_rectangle_data(data);
     const DUI_Layout layout = {
         .kind = LAYOUT_STACK,
@@ -234,8 +208,7 @@ void dui_lay_begin_stack_impl(const int id, const DUI_Layout_StackData data)
     dui__lay_begin(id, data.index, bounds.tabOrderBack, layout);
 }
 
-void dui_lay_begin_spaced_impl(const int id, const DUI_Layout_SpacedData data)
-{
+void dui_lay_begin_spaced_impl(const int id, const DUI_Layout_SpacedData data) {
     const DUI_Layout_BoundsData bounds = dui__lay_rectangle_data(data);
     const DUI_Layout layout = {
         .kind = LAYOUT_SPACED,
@@ -251,8 +224,7 @@ void dui_lay_begin_spaced_impl(const int id, const DUI_Layout_SpacedData data)
     dui__lay_begin(id, data.index, bounds.tabOrderBack, layout);
 }
 
-void dui_lay_begin_rectangle_impl(const int id, const DUI_Layout_RectangleData data)
-{
+void dui_lay_begin_rectangle_impl(const int id, const DUI_Layout_RectangleData data) {
     const DUI_Layout_BoundsData bounds = dui__lay_rectangle_data(data);
     const DUI_Layout layout = {
         .kind = LAYOUT_RECTANGLE,
@@ -263,17 +235,14 @@ void dui_lay_begin_rectangle_impl(const int id, const DUI_Layout_RectangleData d
     dui__lay_begin(id, data.index, bounds.tabOrderBack, layout);
 }
 
-void dui_lay_spacing(const int amount)
-{
+void dui_lay_spacing(const int amount) {
     DUI_Layout* layout = &layout_stack[layout_stack_count - 1];
-    if (layout->kind == LAYOUT_STACK)
-    {
+    if (layout->kind == LAYOUT_STACK) {
         layout->as.stack.inset_begin += amount;
     }
 }
 
-void dui_lay_end()
-{
+void dui_lay_end() {
     NOB_ASSERT(layout_stack_count > 0);
     layout_stack_count--;
 

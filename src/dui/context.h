@@ -21,34 +21,30 @@ struct DUI_Element {
     Rectangle bounds;
 
     DUI_ContextElement* parent;
-    DUI_Element *tabOrderNext;
-    DUI_Element *tabOrderPrev;
+    DUI_Element* tabOrderNext;
+    DUI_Element* tabOrderPrev;
 };
 
-typedef struct
-{
-    DUI_Element **items;
+typedef struct {
+    DUI_Element** items;
     size_t count;
     size_t capacity;
 } DUI_Elements;
 
-typedef struct
-{
+typedef struct {
     int id;
     int index;
 } DUI_ElementIndex;
 
-typedef struct
-{
-    DUI_ElementIndex *items;
+typedef struct {
+    DUI_ElementIndex* items;
     size_t count;
     size_t capacity;
 } DUI_ElementIndices;
 
 // - Contexts
 
-struct DUI_ContextElement
-{
+struct DUI_ContextElement {
     DUI_Element element;
 
     DUI_Elements children;
@@ -62,8 +58,7 @@ struct DUI_ContextElement
     bool placed_at_back;
 };
 
-typedef struct
-{
+typedef struct {
     int index;
     bool tabOrderBack;
 } DUI_ContextData;
@@ -76,18 +71,21 @@ void dui_ctx_end();
 
 #define dui_ctx_element_by_id(type, id, kind, tabOrderBack, disabled, element) \
     dui_ctx_element_by_id_impl(type, id, kind, tabOrderBack, disabled, sizeof(*element), (void**)&element)
-bool dui_ctx_element_by_id_impl(int type, int id, DUI_Kind kind, bool tabOrderBack, bool disabled, int size, void** element);
+bool dui_ctx_element_by_id_impl(
+    int type, int id, DUI_Kind kind, bool tabOrderBack, bool disabled, int size, void** element
+);
 
 #define dui_ctx_active_element_by_id(type, id, kind, disabled, element, ...) \
     dui_ctx_active_element_by_id_impl(type, id, kind, disabled, sizeof(*element), (void**)&element, CLITERAL(DUI_Layout_Data) { __VA_ARGS__ })
-bool dui_ctx_active_element_by_id_impl(int type, int id, DUI_Kind kind, bool disabled, int size,
-                                       void** element, DUI_Layout_Data layout_data);
+bool dui_ctx_active_element_by_id_impl(
+    int type, int id, DUI_Kind kind, bool disabled, int size,
+    void** element, DUI_Layout_Data layout_data
+);
 
 void* dui_ctx_allocate_state(int id, int index, size_t size);
 void* dui_ctx_state_by_id(int id, int index);
 
-typedef struct
-{
+typedef struct {
     bool activated;
     DUI_State state;
 } DUI_NextState;

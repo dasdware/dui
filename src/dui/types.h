@@ -7,8 +7,7 @@ typedef enum {
     DUI_SECONDARY,
 } DUI_Kind;
 
-typedef enum
-{
+typedef enum {
     ALIGN_DEFAULT,
     ALIGN_START,
     ALIGN_CENTER,
@@ -20,8 +19,7 @@ typedef enum
 #define ALIGN_RIGHT ALIGN_END
 #define ALIGN_BOTTOM ALIGN_END
 
-typedef enum
-{
+typedef enum {
     STATE_NORMAL,
     STATE_HOVER,
     STATE_DOWN,

@@ -4,11 +4,9 @@
 #include <dui/layout.h>
 #include <dui/text.h>
 
-bool dui_button_impl(const int id, const DUI_ButtonData data)
-{
+bool dui_button_impl(const int id, const DUI_ButtonData data) {
     static int element_type_button = 0;
-    if (element_type_button == 0)
-    {
+    if (element_type_button == 0) {
         element_type_button = dui_env_next_element_type();
     }
 
@@ -32,16 +30,12 @@ bool dui_button_impl(const int id, const DUI_ButtonData data)
         .anchor = data.anchor,
         .opposite = data.opposite,
         .remaining = data.remaining,
-    ))
-    {
-        if (data.disabled)
-        {
+    )) {
+        if (data.disabled) {
             element->background = dui_ca_create(DUI_BUTTON_BG_DISABLED(data.kind));
             element->foreground = dui_ca_create(DUI_BUTTON_FG_DISABLED(data.kind));
             element->state = STATE_DISABLED;
-        }
-        else
-        {
+        } else {
             element->background = dui_ca_create(DUI_BUTTON_BG(data.kind));
             element->foreground = dui_ca_create(DUI_BUTTON_FG(data.kind));
             element->state = STATE_NORMAL;
@@ -51,14 +45,14 @@ bool dui_button_impl(const int id, const DUI_ButtonData data)
     dui_ca_update(&element->background);
     dui_ca_update(&element->foreground);
 
-    const DUI_NextState next_state = dui_ctx_next_state(element->state,
-                                                    element->element.bounds, data.disabled,
-                                                    &element->element);
-    if (next_state.state != element->state)
-    {
+    const DUI_NextState next_state = dui_ctx_next_state(
+        element->state,
+        element->element.bounds, data.disabled,
+        &element->element
+    );
+    if (next_state.state != element->state) {
         element->state = next_state.state;
-        switch (element->state)
-        {
+        switch (element->state) {
         case STATE_NORMAL:
             dui_ca_start(&element->background, DUI_BUTTON_BG(data.kind), 0.1);
             dui_ca_start(&element->foreground, DUI_BUTTON_FG(data.kind), 0.1);
@@ -80,8 +74,7 @@ bool dui_button_impl(const int id, const DUI_ButtonData data)
 
     DrawRectangleRec(element->element.bounds, element->background.current);
 
-    if (data.caption)
-    {
+    if (data.caption) {
         dui_text(
             data.caption,
             element->element.bounds,

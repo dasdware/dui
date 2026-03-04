@@ -11,13 +11,11 @@
 #include <dui/layout.h>
 #include <dui/label.h>
 
-int main(void)
-{
-    InitWindow(50*16, 50*9, "DUI");
+int main(void) {
+    InitWindow(50 * 16, 50 * 9, "DUI");
     SetTargetFPS(60);
 
-    while (!WindowShouldClose())
-    {
+    while (!WindowShouldClose()) {
         dui_env_begin();
         {
             dui_lay_begin_screen(.padding = 3);
@@ -59,8 +57,7 @@ int main(void)
                     }
                     dui_lay_end();
 
-                    if (dui_button(.caption = "Exit", .kind = DUI_PRIMARY, .opposite = true))
-                    {
+                    if (dui_button(.caption = "Exit", .kind = DUI_PRIMARY, .opposite = true)) {
                         break;
                     }
                 }
