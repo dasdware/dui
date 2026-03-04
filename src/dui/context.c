@@ -52,7 +52,7 @@ static void dui__ctx_link_tab_order(DUI_Element* element, const bool tabOrderBac
 
 int dui__ctx_next_index_by_id(const int id)
 {
-    DUI_ContextElement *ctx = dui_ctx();
+    DUI_ContextElement* ctx = dui_ctx();
 
     nob_da_foreach(DUI_ElementIndex, it, &ctx->indices)
     {
@@ -72,32 +72,35 @@ int dui__ctx_next_index_by_id(const int id)
     return element_index.index;
 }
 
-bool dui_ctx_element_by_id_impl(const int kind, const int id, const bool tabOrderBack, const bool disabled, const int size, void** element)
+bool dui_ctx_element_by_id_impl(const int type, const int id, const DUI_Kind kind, const bool tabOrderBack, const bool disabled,
+                                const int size, void** element)
 {
-    DUI_ContextElement *ctx = dui_ctx();
-    DUI_Environment *env = dui_env();
+    DUI_ContextElement* ctx = dui_ctx();
+    DUI_Environment* env = dui_env();
     const int index = dui__ctx_next_index_by_id(id);
 
     nob_da_foreach(DUI_Element*, it, &ctx->children)
     {
         DUI_Element* candidate = *it;
-        if (candidate->kind == kind && candidate->id == id && candidate->index == index)
+        if (candidate->type == type && candidate->id == id && candidate->index == index)
         {
             if (!disabled)
             {
                 dui__ctx_link_tab_order(candidate, tabOrderBack);
             }
+            candidate->kind = kind;
             *element = candidate;
             return false;
         }
     }
 
-    DUI_Element *new_element = arena_alloc(&env->memory, size);
+    DUI_Element* new_element = arena_alloc(&env->memory, size);
     memset(new_element, 0, size);
 
-    new_element->kind = kind;
+    new_element->type = type;
     new_element->id = id;
     new_element->index = index;
+    new_element->kind = kind;
     new_element->parent = ctx;
     nob_da_append(&ctx->children, new_element);
 
@@ -109,18 +112,29 @@ bool dui_ctx_element_by_id_impl(const int kind, const int id, const bool tabOrde
     return true;
 }
 
+bool dui_ctx_active_element_by_id_impl(const int type, const int id, const DUI_Kind kind, const bool disabled, const int size,
+                                       void** element, const DUI_Layout_Data layout_data)
+{
+    const DUI_Layout_BoundsData bounds_data = dui_lay_rectangle_impl(layout_data);
+
+    const bool result = dui_ctx_element_by_id_impl(type, id, kind, bounds_data.tabOrderBack, disabled, size, element);
+    ((DUI_Element*)*element)->bounds = bounds_data.bounds;
+
+    return result;
+}
+
 void dui_ctx_begin_impl(const int id, const DUI_ContextData data)
 {
-    static int element_kind_context = 0;
-    if (element_kind_context == 0)
+    static int element_type_context = 0;
+    if (element_type_context == 0)
     {
-        element_kind_context = dui_env_next_element_kind();
+        element_type_context = dui_env_next_element_type();
     }
 
-    DUI_Environment *env = dui_env();
+    DUI_Environment* env = dui_env();
 
     DUI_ContextElement* element;
-    dui_ctx_element_by_id(element_kind_context, id, data.tabOrderBack, false, element);
+    dui_ctx_element_by_id(element_type_context, id, DUI_DEFAULT, data.tabOrderBack, false, element);
     element->tabOrderFrontCursor = NULL;
     element->tabOrderBackCursor = NULL;
     element->placed_at_back = data.tabOrderBack;
@@ -131,7 +145,7 @@ void dui_ctx_begin_impl(const int id, const DUI_ContextData data)
 
 void dui_ctx_end()
 {
-    DUI_Environment *env = dui_env();
+    DUI_Environment* env = dui_env();
 
     DUI_ContextElement* ctx = env->context_stack_top;
     DUI_ContextElement* parent = ctx->element.parent;
@@ -212,4 +226,56 @@ void dui_ctx_end()
     }
 
     env->context_stack_top = parent;
+}
+
+DUI_NextState dui_ctx_next_state(const DUI_State current_state, const Rectangle bounds, const bool disabled, DUI_Element* element)
+{
+    DUI_NextState next_state = {
+        .activated = false,
+        .state = current_state,
+    };
+
+    if (disabled)
+    {
+        next_state.state = STATE_DISABLED;
+        return next_state;
+    }
+
+    const bool hovered = CheckCollisionPointRec(GetMousePosition(), bounds);
+    if (IsMouseButtonReleased(MOUSE_LEFT_BUTTON))
+    {
+        if (current_state == STATE_DOWN && hovered)
+        {
+            next_state.activated = true;
+        }
+
+        next_state.state = STATE_NORMAL;
+    }
+
+    if (hovered)
+    {
+        if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
+        {
+            next_state.state = STATE_DOWN;
+            dui_env_focus(element);
+        }
+        else if (current_state != STATE_HOVER && current_state != STATE_DOWN)
+        {
+            next_state.state = STATE_HOVER;
+        }
+    }
+    else
+    {
+        if (current_state == STATE_HOVER)
+        {
+            next_state.state = STATE_NORMAL;
+        }
+    }
+
+    if (dui_env_has_focus(element) && (IsKeyPressed(KEY_SPACE) || IsKeyPressed(KEY_ENTER)))
+    {
+        next_state.activated = true;
+    }
+
+    return next_state;
 }

@@ -76,14 +76,20 @@ void dui_env_begin()
 
 void dui_env_end()
 {
+    const DUI_Element* focused_element = dui_env()->focused_element;
+    if (focused_element)
+    {
+        dui_env_draw_focus_frame(focused_element->bounds, DUI_FOCUS_COLOR(focused_element->kind));
+    }
+
     EndDrawing();
 
     dui_handle_global_keys();
 }
 
-int dui_env_next_element_kind()
+int dui_env_next_element_type()
 {
-    static int current_element_kind = 0;
-    current_element_kind += 1;
-    return current_element_kind;
+    static int current_element_type = 0;
+    current_element_type += 1;
+    return current_element_type;
 }

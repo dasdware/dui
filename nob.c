@@ -89,7 +89,6 @@ bool build_main()
     nob_cmd_append(&cmd, "./src/dui/label.c");
     nob_cmd_append(&cmd, "./src/dui/layout.c");
     nob_cmd_append(&cmd, "./src/dui/text.c");
-    nob_cmd_append(&cmd, "./src/dui/types.c");
     nob_cmd_append(&cmd, "./src/main.c");
     nob_cmd_append(&cmd, "-lraylib");
     nob_cmd_append(&cmd, "-lgdi32");

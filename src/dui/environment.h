@@ -42,6 +42,6 @@ void dui_env_focus_impl(DUI_Element* element);
 #define dui_env_has_focus(element) dui_env_has_focus_impl((DUI_Element*) (element))
 bool dui_env_has_focus_impl(const DUI_Element* element);
 
-int dui_env_next_element_kind();
+int dui_env_next_element_type();
 
 #endif // DUI_ENVIRONMENT_H

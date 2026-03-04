@@ -6,10 +6,10 @@
 
 bool dui_button_impl(const int id, const DUI_ButtonData data)
 {
-    static int element_kind_button = 0;
-    if (element_kind_button == 0)
+    static int element_type_button = 0;
+    if (element_type_button == 0)
     {
-        element_kind_button = dui_env_next_element_kind();
+        element_type_button = dui_env_next_element_type();
     }
 
     const DUI_Environment* env = dui_env();
@@ -19,17 +19,20 @@ bool dui_button_impl(const int id, const DUI_ButtonData data)
     const int preferred_width = text_width + 4 * padding;
     const int preferred_height = env->font_height + 2 * padding;
 
-    const DUI_Layout_BoundsData bounds_data = dui_lay_rectangle(
+    DUI_ButtonElement* element;
+    if (dui_ctx_active_element_by_id(
+        element_type_button,
+        id,
+        data.kind,
+        data.disabled,
+        element,
         .width = preferred_width,
         .height = preferred_height,
         // TODO: Which layout fields should be forwarded and how
         .anchor = data.anchor,
         .opposite = data.opposite,
         .remaining = data.remaining,
-    );
-
-    DUI_ButtonElement* element;
-    if (dui_ctx_element_by_id(element_kind_button, id, bounds_data.tabOrderBack, data.disabled, element))
+    ))
     {
         if (data.disabled)
         {
@@ -48,8 +51,8 @@ bool dui_button_impl(const int id, const DUI_ButtonData data)
     dui_ca_update(&element->background);
     dui_ca_update(&element->foreground);
 
-    const DUI_NextState next_state = dui_next_state(element->state,
-                                                    bounds_data.bounds, data.disabled,
+    const DUI_NextState next_state = dui_ctx_next_state(element->state,
+                                                    element->element.bounds, data.disabled,
                                                     &element->element);
     if (next_state.state != element->state)
     {
@@ -75,17 +78,13 @@ bool dui_button_impl(const int id, const DUI_ButtonData data)
         }
     }
 
-    DrawRectangleRec(bounds_data.bounds, element->background.current);
-    if (!data.disabled && dui_env_has_focus(element))
-    {
-        dui_env_draw_focus_frame(bounds_data.bounds, DUI_FOCUS_COLOR(data.kind));
-    }
+    DrawRectangleRec(element->element.bounds, element->background.current);
 
     if (data.caption)
     {
         dui_text(
             data.caption,
-            bounds_data.bounds,
+            element->element.bounds,
             .horizontal_alignment = ALIGN_CENTER,
             .vertical_alignment = ALIGN_CENTER,
             .offset_y = (element->state == STATE_DOWN) ? 1 : 0,

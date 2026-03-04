@@ -1,8 +1,6 @@
 #ifndef DUI_TYPES_H
 #define DUI_TYPES_H
 
-#include <dui/context.h>
-
 typedef enum {
     DUI_DEFAULT,
     DUI_PRIMARY,
@@ -29,13 +27,5 @@ typedef enum
     STATE_DOWN,
     STATE_DISABLED,
 } DUI_State;
-
-typedef struct
-{
-    bool activated;
-    DUI_State state;
-} DUI_NextState;
-
-DUI_NextState dui_next_state(DUI_State current_state, Rectangle bounds, bool disabled, DUI_Element* element);
 
 #endif // DUI_TYPES_H
