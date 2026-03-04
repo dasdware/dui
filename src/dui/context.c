@@ -163,7 +163,14 @@ void dui_ctx_end()
             {
                 ctx->tabOrderFront->tabOrderPrev = before;
             }
-            parent->tabOrderFrontCursor = ctx->tabOrderBack;
+            if (ctx->tabOrderBack)
+            {
+                parent->tabOrderFrontCursor = ctx->tabOrderBack;
+            }
+            else
+            {
+                parent->tabOrderFrontCursor = before;
+            }
         }
         else
         {
@@ -182,7 +189,14 @@ void dui_ctx_end()
             {
                 ctx->tabOrderBack->tabOrderNext = after;
             }
-            parent->tabOrderBackCursor = ctx->tabOrderFront;
+            if (ctx->tabOrderFront)
+            {
+                parent->tabOrderBackCursor = ctx->tabOrderFront;
+            }
+            else
+            {
+                parent->tabOrderFrontCursor = after;
+            }
         }
         else
         {
