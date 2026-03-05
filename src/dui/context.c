@@ -187,7 +187,7 @@ void dui_ctx_end() {
 }
 
 DUI_NextState dui_ctx_next_state(
-    const DUI_State current_state, const Rectangle bounds, const bool disabled, DUI_Element* element
+    const DUI_State current_state, const bool disabled, DUI_Element* element
 ) {
     DUI_NextState next_state = {
         .activated = false,
@@ -199,7 +199,7 @@ DUI_NextState dui_ctx_next_state(
         return next_state;
     }
 
-    const bool hovered = CheckCollisionPointRec(GetMousePosition(), bounds);
+    const bool hovered = CheckCollisionPointRec(GetMousePosition(), element->bounds);
     if (IsMouseButtonReleased(MOUSE_LEFT_BUTTON)) {
         if (current_state == STATE_DOWN && hovered) {
             next_state.activated = true;

@@ -50,7 +50,7 @@ bool dui_checkbox_impl(const int id, const DUI_CheckboxData data) {
 
     const DUI_NextState next_state = dui_ctx_next_state(
         element->state,
-        element->element.bounds, data.disabled,
+        data.disabled,
         &element->element
     );
     if (next_state.state != element->state) {

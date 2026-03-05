@@ -90,6 +90,6 @@ typedef struct {
     DUI_State state;
 } DUI_NextState;
 
-DUI_NextState dui_ctx_next_state(DUI_State current_state, Rectangle bounds, bool disabled, DUI_Element* element);
+DUI_NextState dui_ctx_next_state(DUI_State current_state, bool disabled, DUI_Element* element);
 
 #endif //DUI_CONTEXT_H
