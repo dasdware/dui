@@ -85,6 +85,7 @@ bool build_main() {
     nob_cmd_append(&cmd, "./src/dui/button.c");
     nob_cmd_append(&cmd, "./src/dui/checkbox.c");
     nob_cmd_append(&cmd, "./src/dui/context.c");
+    nob_cmd_append(&cmd, "./src/dui/edit.c");
     nob_cmd_append(&cmd, "./src/dui/environment.c");
     nob_cmd_append(&cmd, "./src/dui/keyboard.c");
     nob_cmd_append(&cmd, "./src/dui/label.c");
