@@ -6,6 +6,10 @@
 
 #define DUI_COLOR(hex) CLITERAL(Color){ (hex >> 16) & 0xFF, (hex >> 8) & 0xFF, hex & 0xFF, 0xFF }
 
+// These colors have been ported from the Tailwind CSS v3.4.19 library:
+// https://raw.githubusercontent.com/tailwindlabs/tailwindcss/refs/tags/v3.4.19/src/public/colors.js
+// Tailwind CSS is licensed under the MIT license which is included at the end of this file.
+
 #define DUI_PALETTE_SLATE_50 DUI_COLOR(0xF8FAFC)
 #define DUI_PALETTE_SLATE_100 DUI_COLOR(0xF1F5F9)
 #define DUI_PALETTE_SLATE_200 DUI_COLOR(0xE2E8F0)
@@ -292,3 +296,27 @@
 #define DUI_FOCUS_COLOR(kind) DUI_PALETTE_DISPATCH(kind, DUI_PRIMARY_COLOR(200), DUI_SECONDARY_COLOR(200), DUI_DEFAULT_COLOR(200))
 
 #endif //DUI_COLORS_H
+
+// Tailwind CSS license: https://raw.githubusercontent.com/tailwindlabs/tailwindcss/refs/tags/v3.4.19/LICENSE
+//
+// MIT License
+//
+// Copyright (c) Tailwind Labs, Inc.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in all
+// copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
