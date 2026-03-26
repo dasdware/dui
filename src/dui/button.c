@@ -3,6 +3,7 @@
 
 #include <dui/layout.h>
 #include <dui/text.h>
+#include <dui/theme.h>
 
 bool dui_button_impl(const int id, const DUI_ButtonData data) {
     static int element_type_button = 0;
@@ -10,12 +11,10 @@ bool dui_button_impl(const int id, const DUI_ButtonData data) {
         element_type_button = dui_env_next_element_type();
     }
 
-    const DUI_Environment* env = dui_env();
-
     const int text_width = dui_text_measure(data.caption).x;
-    const int padding = dui_env_spacing(1);
+    const int padding = DUI_SPACING(1);
     const int preferred_width = text_width + 4 * padding;
-    const int preferred_height = env->font_height + 2 * padding;
+    const int preferred_height = DUI_FONT_SIZE + 2 * padding;
 
     DUI_ButtonElement* element;
     if (dui_ctx_active_element_by_id(

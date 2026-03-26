@@ -1,13 +1,15 @@
 #include <dui/environment.h>
 #include <dui/text.h>
 
+#include "theme.h"
+
 Vector2 dui_text_measure(const char* text) {
     if (text == NULL) {
         return CLITERAL(Vector2){0, 0};
     }
 
     const DUI_Environment* env = dui_env();
-    return MeasureTextEx(env->font, text, env->font_height, env->font_spacing);
+    return MeasureTextEx(env->font, text, DUI_FONT_SIZE, DUI_FONT_SPACING);
 }
 
 void dui_text_impl(const char* text, const Rectangle bounds, const DUI_TextData data) {
@@ -45,7 +47,7 @@ void dui_text_impl(const char* text, const Rectangle bounds, const DUI_TextData 
     }
 
     DrawTextEx(
-        env->font, text, CLITERAL(Vector2){x + data.offset_x, y + data.offset_y}, env->font_height, env->font_spacing,
+        env->font, text, CLITERAL(Vector2){x + data.offset_x, y + data.offset_y}, DUI_FONT_SIZE, DUI_FONT_SPACING,
         data.color
     );
 }

@@ -3,6 +3,7 @@
 
 #include "keyboard.h"
 #include "text.h"
+#include "theme.h"
 
 static int dui__edit_cursor_offset(const Nob_String_Builder* text, const size_t position) {
     return dui_text_measure(TextFormat("%.*s", (int)position, text->items)).x + 1;
@@ -51,11 +52,9 @@ bool dui_edit_impl(const int id, const DUI_EditData data) {
         element_type_edit = dui_env_next_element_type();
     }
 
-    const DUI_Environment* env = dui_env();
-
-    const int padding = dui_env_spacing(1);
+    const int padding = DUI_SPACING(1);
     const int preferred_width = 200;
-    const int preferred_height = env->font_height + 2 * padding;
+    const int preferred_height = DUI_FONT_SIZE + 2 * padding;
 
     DUI_EditElement* element;
     if (dui_ctx_active_element_by_id(

@@ -1,6 +1,7 @@
 #ifndef DUI_ENVIRONMENT_H
 #define DUI_ENVIRONMENT_H
 
+#include <math.h>
 #include <stdbool.h>
 #include <arena.h>
 
@@ -18,8 +19,6 @@ typedef struct {
     int focus_frame_width;
 
     Font font;
-    int font_height;
-    float font_spacing;
 
     DUI_Element* focused_element;
 } DUI_Environment;
@@ -27,10 +26,6 @@ typedef struct {
 DUI_Environment* dui_env();
 void dui_env_begin();
 void dui_env_end();
-
-int dui_env_spacing(float n);
-
-void dui_env_load_font(const char* file_name, int size, float spacing);
 
 void dui_env_clear_background();
 void dui_env_draw_focus_frame(Rectangle bounds, Color color);

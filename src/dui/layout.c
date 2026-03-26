@@ -3,6 +3,7 @@
 
 #include <dui/environment.h>
 #include <dui/layout.h>
+#include <dui/theme.h>
 
 #define dui__lay_rectangle_data(data) dui_lay_rectangle_impl(*((DUI_Layout_Data*) &data))
 
@@ -11,10 +12,10 @@ static size_t layout_stack_count = 0;
 
 Rectangle dui_lay_padding(const Rectangle bounds, const int left, const int top, const int right, const int bottom) {
     Rectangle result = bounds;
-    result.x += dui_env_spacing(left);
-    result.y += dui_env_spacing(top);
-    result.width -= dui_env_spacing(left + right);
-    result.height -= dui_env_spacing(top + bottom);
+    result.x += DUI_SPACING(left);
+    result.y += DUI_SPACING(top);
+    result.width -= DUI_SPACING(left + right);
+    result.height -= DUI_SPACING(top + bottom);
     return result;
 }
 
@@ -184,7 +185,7 @@ void dui_lay_begin_anchored_impl(const int id, const DUI_Layout_AnchoredData dat
             .inset_top = 0,
             .inset_right = 0,
             .inset_bottom = 0,
-            .gap = dui_env_spacing(data.gap),
+            .gap = DUI_SPACING(data.gap),
         },
     };
 
@@ -199,7 +200,7 @@ void dui_lay_begin_stack_impl(const int id, const DUI_Layout_StackData data) {
         .as.stack = {
             .direction = data.direction,
             .item_size = data.item_size,
-            .gap = dui_env_spacing(data.gap),
+            .gap = DUI_SPACING(data.gap),
             .inset_begin = 0,
             .inset_end = 0,
         },
@@ -216,7 +217,7 @@ void dui_lay_begin_spaced_impl(const int id, const DUI_Layout_SpacedData data) {
         .as.spaced = {
             .direction = data.direction,
             .count = data.count,
-            .gap = dui_env_spacing(data.gap),
+            .gap = DUI_SPACING(data.gap),
             .cursor = 0,
         },
     };

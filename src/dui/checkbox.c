@@ -1,6 +1,7 @@
 #include <dui/checkbox.h>
 #include <dui/environment.h>
 #include <dui/text.h>
+#include <dui/theme.h>
 
 bool dui_checkbox_impl(const int id, const DUI_CheckboxData data) {
     static int element_type_checkbox = 0;
@@ -8,12 +9,10 @@ bool dui_checkbox_impl(const int id, const DUI_CheckboxData data) {
         element_type_checkbox = dui_env_next_element_type();
     }
 
-    const DUI_Environment* env = dui_env();
-
     const int text_width = dui_text_measure(data.caption).x;
-    const int padding = dui_env_spacing(1);
+    const int padding = DUI_SPACING(1);
     const int preferred_width = text_width + 4 * padding;
-    const int preferred_height = env->font_height + 2 * padding;
+    const int preferred_height = DUI_FONT_SIZE + 2 * padding;
 
     DUI_CheckboxElement* element;
     if (dui_ctx_active_element_by_id(

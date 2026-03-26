@@ -1,7 +1,7 @@
-#include <math.h>
 #include <raylib.h>
 #include <dui/environment.h>
 #include <dui/keyboard.h>
+#include <dui/theme.h>
 
 DUI_Environment* dui_env() {
     static DUI_Environment environment = {0};
@@ -11,27 +11,11 @@ DUI_Environment* dui_env() {
         environment.focus_frame_offset = 0;
         environment.focus_frame_width = 2;
 
-        environment.font_height = 20;
-        environment.font_spacing = 0;
-        environment.font = LoadFontEx("./resources/fonts/open-sans.regular.ttf", environment.font_height, NULL, 0);
+        environment.font = LoadFontEx(DUI_FONT_FILE, DUI_FONT_SIZE, NULL, 0);
 
         environment.initialized = true;
     }
     return &environment;
-}
-
-int dui_env_spacing(const float n) {
-    const DUI_Environment* env = dui_env();
-    return round(n / 4 * env->font_height);
-}
-
-void dui_env_load_font(const char* file_name, const int size, const float spacing) {
-    DUI_Environment* env = dui_env();
-    UnloadFont(env->font);
-
-    env->font_height = size;
-    env->font_spacing = spacing;
-    env->font = LoadFontEx(file_name, env->font_height, NULL, 0);
 }
 
 void dui_env_clear_background() {
