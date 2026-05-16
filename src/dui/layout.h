@@ -69,15 +69,6 @@ typedef struct {
     RL_LayoutAs as;
 } DUI_Layout;
 
-#define DUI_LAYOUT_DATA_FIELDS \
-    int size; \
-    int width; \
-    int height; \
-    int weight; \
-    bool remaining; \
-    bool opposite; \
-    DUI_Layout_Anchor anchor
-
 Rectangle dui_lay_padding(Rectangle bounds, int left, int top, int right, int bottom);
 #define dui_lay_padding_all(bounds, padding) dui_lay_padding(bounds, padding, padding, padding, padding)
 #define dui_lay_padding_symmetric(bounds, horizontal, vertical) dui_lay_padding(bounds, horizontal, vertical, horizontal, vertical)
@@ -87,8 +78,19 @@ Rectangle dui_lay_center(Rectangle bounds, int width, int height);
 void dui_lay_spacing(int amount);
 
 typedef struct {
-    DUI_LAYOUT_DATA_FIELDS;
+    int size;
+    int width;
+    int height;
+    int weight;
+    bool remaining;
+    bool opposite;
+    DUI_Layout_Anchor anchor;
 } DUI_Layout_Data;
+
+#define DUI_LAYOUT(...) .layout_data = CLITERAL(DUI_Layout_Data) { __VA_ARGS__ }
+#define DUI_L DUI_LAYOUT
+
+DUI_Layout_Data dui_lay_forward(int preferred_width, int preferred_height, DUI_Layout_Data data);
 
 typedef struct {
     Rectangle bounds;
@@ -99,7 +101,7 @@ typedef struct {
 DUI_Layout_BoundsData dui_lay_rectangle_impl(DUI_Layout_Data data);
 
 typedef struct {
-    DUI_LAYOUT_DATA_FIELDS;
+    DUI_Layout_Data layout_data;
     int padding;
 } DUI_Layout_ScreenData;
 
@@ -107,7 +109,7 @@ typedef struct {
 void dui_lay_begin_screen_impl(int id, DUI_Layout_ScreenData data);
 
 typedef struct {
-    DUI_LAYOUT_DATA_FIELDS;
+    DUI_Layout_Data layout_data;
     int gap;
 } DUI_Layout_AnchoredData;
 
@@ -115,7 +117,7 @@ typedef struct {
 void dui_lay_begin_anchored_impl(int id, DUI_Layout_AnchoredData data);
 
 typedef struct {
-    DUI_LAYOUT_DATA_FIELDS;
+    DUI_Layout_Data layout_data;
     RL_LayoutDirection direction;
     int item_size;
     int gap;
@@ -125,7 +127,7 @@ typedef struct {
 void dui_lay_begin_stack_impl(int id, DUI_Layout_StackData data);
 
 typedef struct {
-    DUI_LAYOUT_DATA_FIELDS;
+    DUI_Layout_Data layout_data;
     RL_LayoutDirection direction;
     int count;
     int gap;
@@ -135,7 +137,7 @@ typedef struct {
 void dui_lay_begin_spaced_impl(int id, DUI_Layout_SpacedData data);
 
 typedef struct {
-    DUI_LAYOUT_DATA_FIELDS;
+    DUI_Layout_Data layout_data;
     Rectangle rectangle;
 } DUI_Layout_RectangleData;
 

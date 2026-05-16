@@ -64,7 +64,7 @@ int main(void) {
                         }
                     }
 
-                    if (dui_button(.caption = "Exit", .kind = DUI_PRIMARY, .opposite = true)) {
+                    if (dui_button(.caption = "Exit", .kind = DUI_PRIMARY, DUI_L(.opposite = true))) {
                         running = false;
                     }
                 }

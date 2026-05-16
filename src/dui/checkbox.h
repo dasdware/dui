@@ -26,7 +26,7 @@ typedef enum {
 } DUI_CheckState;
 
 typedef struct {
-    DUI_LAYOUT_DATA_FIELDS;
+    DUI_Layout_Data layout_data;
 
     const char* caption;
     DUI_Kind kind;

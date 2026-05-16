@@ -21,7 +21,7 @@
 #define DUI_BUTTON_FG_DISABLED(kind) DUI_DEFAULT_COLOR(400)
 
 typedef struct {
-    DUI_LAYOUT_DATA_FIELDS;
+    DUI_Layout_Data layout_data;
 
     const char* caption;
     DUI_Kind kind;

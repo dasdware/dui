@@ -8,7 +8,7 @@
 #define DUI_LABEL_TEXT_COLOR(kind) DUI_SHADE_DISPATCH(kind, 500, 500, 300)
 
 typedef struct {
-    DUI_LAYOUT_DATA_FIELDS;
+    DUI_Layout_Data layout_data;
 
     DUI_Kind kind;
 } DUI_LabelData;

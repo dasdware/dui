@@ -74,8 +74,8 @@ bool dui_ctx_element_by_id_impl(
     int type, int id, DUI_Kind kind, bool tabOrderBack, bool disabled, int size, void** element
 );
 
-#define dui_ctx_active_element_by_id(type, id, kind, disabled, element, ...) \
-    dui_ctx_active_element_by_id_impl(type, id, kind, disabled, sizeof(*element), (void**)&element, CLITERAL(DUI_Layout_Data) { __VA_ARGS__ })
+#define dui_ctx_active_element_by_id(type, id, kind, disabled, element, layout_data) \
+    dui_ctx_active_element_by_id_impl(type, id, kind, disabled, sizeof(*element), (void**)&element, layout_data)
 bool dui_ctx_active_element_by_id_impl(
     int type, int id, DUI_Kind kind, bool disabled, int size,
     void** element, DUI_Layout_Data layout_data

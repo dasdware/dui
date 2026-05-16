@@ -63,12 +63,7 @@ bool dui_edit_impl(const int id, const DUI_EditData data) {
         data.kind,
         data.disabled,
         element,
-        .width = preferred_width,
-        .height = preferred_height,
-        // TODO: Which layout fields should be forwarded and how
-        .anchor = data.anchor,
-        .opposite = data.opposite,
-        .remaining = data.remaining,
+        dui_lay_forward(preferred_width, preferred_height, data.layout_data)
     )) {
         if (data.disabled) {
             element->background = dui_ca_create(DUI_EDIT_BG_DISABLED(data.kind));

@@ -5,10 +5,18 @@
 #include <dui/layout.h>
 #include <dui/theme.h>
 
-#define dui__lay_rectangle_data(data) dui_lay_rectangle_impl(*((DUI_Layout_Data*) &data))
-
 static DUI_Layout layout_stack[DUI_LAYOUT_STACK_CAPACITY] = {0};
 static size_t layout_stack_count = 0;
+
+DUI_Layout_Data dui_lay_forward(const int preferred_width, const int preferred_height, DUI_Layout_Data data) {
+    if (data.width == 0) {
+        data.width = preferred_width;
+    }
+    if (data.height == 0) {
+        data.height = preferred_height;
+    }
+    return data;
+}
 
 Rectangle dui_lay_padding(const Rectangle bounds, const int left, const int top, const int right, const int bottom) {
     Rectangle result = bounds;
@@ -176,7 +184,7 @@ void dui_lay_begin_screen_impl(const int id, const DUI_Layout_ScreenData data) {
 }
 
 void dui_lay_begin_anchored_impl(const int id, const DUI_Layout_AnchoredData data) {
-    const DUI_Layout_BoundsData bounds = dui__lay_rectangle_data(data);
+    const DUI_Layout_BoundsData bounds = dui_lay_rectangle_impl(data.layout_data);
     const DUI_Layout layout = {
         .kind = LAYOUT_ANCHOR,
         .parent_bounds = bounds.bounds,
@@ -193,7 +201,7 @@ void dui_lay_begin_anchored_impl(const int id, const DUI_Layout_AnchoredData dat
 }
 
 void dui_lay_begin_stack_impl(const int id, const DUI_Layout_StackData data) {
-    const DUI_Layout_BoundsData bounds = dui__lay_rectangle_data(data);
+    const DUI_Layout_BoundsData bounds = dui_lay_rectangle_impl(data.layout_data);
     const DUI_Layout layout = {
         .kind = LAYOUT_STACK,
         .parent_bounds = bounds.bounds,
@@ -210,7 +218,7 @@ void dui_lay_begin_stack_impl(const int id, const DUI_Layout_StackData data) {
 }
 
 void dui_lay_begin_spaced_impl(const int id, const DUI_Layout_SpacedData data) {
-    const DUI_Layout_BoundsData bounds = dui__lay_rectangle_data(data);
+    const DUI_Layout_BoundsData bounds = dui_lay_rectangle_impl(data.layout_data);
     const DUI_Layout layout = {
         .kind = LAYOUT_SPACED,
         .parent_bounds = bounds.bounds,
@@ -226,7 +234,7 @@ void dui_lay_begin_spaced_impl(const int id, const DUI_Layout_SpacedData data) {
 }
 
 void dui_lay_begin_rectangle_impl(const int id, const DUI_Layout_RectangleData data) {
-    const DUI_Layout_BoundsData bounds = dui__lay_rectangle_data(data);
+    const DUI_Layout_BoundsData bounds = dui_lay_rectangle_impl(data.layout_data);
     const DUI_Layout layout = {
         .kind = LAYOUT_RECTANGLE,
         .parent_bounds = bounds.bounds,
