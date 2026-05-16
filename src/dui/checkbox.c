@@ -22,7 +22,7 @@ bool dui_checkbox_impl(const int id, const DUI_CheckboxData data) {
         data.disabled,
         element,
         dui_lay_forward(preferred_width, preferred_height, data.layout_data)
-    )) {
+    ) == DUI_NEWLY_CREATED) {
         if (data.disabled) {
             element->text_color = dui_ca_create(DUI_CHECKBOX_TEXT_DISABLED(data.kind));
             element->box_color = dui_ca_create(DUI_CHECKBOX_BOX_DISABLED(data.kind));

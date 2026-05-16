@@ -58,7 +58,7 @@ int dui__ctx_next_index_by_id(const int id) {
     return element_index.index;
 }
 
-bool dui_ctx_element_by_id_impl(
+DUI_ElementCacheState dui_ctx_element_by_id_impl(
     const int type, const int id, const DUI_Kind kind, const bool tabOrderBack, const bool disabled,
     const int size, void** element
 ) {
@@ -74,7 +74,7 @@ bool dui_ctx_element_by_id_impl(
             }
             candidate->kind = kind;
             *element = candidate;
-            return false;
+            return DUI_CACHED;
         }
     }
 
@@ -92,16 +92,18 @@ bool dui_ctx_element_by_id_impl(
         dui__ctx_link_tab_order(new_element, tabOrderBack);
     }
     *element = new_element;
-    return true;
+    return DUI_NEWLY_CREATED;
 }
 
-bool dui_ctx_active_element_by_id_impl(
+DUI_ElementCacheState dui_ctx_active_element_by_id_impl(
     const int type, const int id, const DUI_Kind kind, const bool disabled, const int size,
     void** element, const DUI_Layout_Data layout_data
 ) {
     const DUI_Layout_BoundsData bounds_data = dui_lay_rectangle_impl(layout_data);
 
-    const bool result = dui_ctx_element_by_id_impl(type, id, kind, bounds_data.tabOrderBack, disabled, size, element);
+    const DUI_ElementCacheState result = dui_ctx_element_by_id_impl(
+        type, id, kind, bounds_data.tabOrderBack, disabled, size, element
+    );
     ((DUI_Element*)*element)->bounds = bounds_data.bounds;
 
     return result;

@@ -68,15 +68,20 @@ DUI_ContextElement* dui_ctx();
 void dui_ctx_begin_impl(int id, DUI_ContextData data);
 void dui_ctx_end();
 
+typedef enum {
+    DUI_NEWLY_CREATED,
+    DUI_CACHED
+} DUI_ElementCacheState;
+
 #define dui_ctx_element_by_id(type, id, kind, tabOrderBack, disabled, element) \
     dui_ctx_element_by_id_impl(type, id, kind, tabOrderBack, disabled, sizeof(*element), (void**)&element)
-bool dui_ctx_element_by_id_impl(
+DUI_ElementCacheState dui_ctx_element_by_id_impl(
     int type, int id, DUI_Kind kind, bool tabOrderBack, bool disabled, int size, void** element
 );
 
 #define dui_ctx_active_element_by_id(type, id, kind, disabled, element, layout_data) \
     dui_ctx_active_element_by_id_impl(type, id, kind, disabled, sizeof(*element), (void**)&element, layout_data)
-bool dui_ctx_active_element_by_id_impl(
+DUI_ElementCacheState dui_ctx_active_element_by_id_impl(
     int type, int id, DUI_Kind kind, bool disabled, int size,
     void** element, DUI_Layout_Data layout_data
 );
