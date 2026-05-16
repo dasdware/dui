@@ -70,7 +70,6 @@ typedef struct {
 } DUI_Layout;
 
 #define DUI_LAYOUT_DATA_FIELDS \
-    int index; \
     int size; \
     int width; \
     int height; \

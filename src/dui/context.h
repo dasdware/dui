@@ -59,7 +59,6 @@ struct DUI_ContextElement {
 };
 
 typedef struct {
-    int index;
     bool tabOrderBack;
 } DUI_ContextData;
 

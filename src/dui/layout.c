@@ -158,8 +158,8 @@ DUI_Layout_BoundsData dui_lay_rectangle_impl(const DUI_Layout_Data data) {
     }
 }
 
-static void dui__lay_begin(const int id, const int index, const bool tabOrderBack, const DUI_Layout layout) {
-    dui_ctx_begin_impl(id, CLITERAL(DUI_ContextData){.index = index, .tabOrderBack = tabOrderBack});
+static void dui__lay_begin(const int id, const bool tabOrderBack, const DUI_Layout layout) {
+    dui_ctx_begin_impl(id, CLITERAL(DUI_ContextData){.tabOrderBack = tabOrderBack});
 
     NOB_ASSERT(layout_stack_count < DUI_LAYOUT_STACK_CAPACITY);
     layout_stack[layout_stack_count] = layout;
@@ -172,7 +172,7 @@ void dui_lay_begin_screen_impl(const int id, const DUI_Layout_ScreenData data) {
         .parent_bounds = {0},
         .as.screen.padding = data.padding,
     };
-    dui__lay_begin(id, data.index, false, layout);
+    dui__lay_begin(id, false, layout);
 }
 
 void dui_lay_begin_anchored_impl(const int id, const DUI_Layout_AnchoredData data) {
@@ -189,7 +189,7 @@ void dui_lay_begin_anchored_impl(const int id, const DUI_Layout_AnchoredData dat
         },
     };
 
-    dui__lay_begin(id, data.index, bounds.tabOrderBack, layout);
+    dui__lay_begin(id, bounds.tabOrderBack, layout);
 }
 
 void dui_lay_begin_stack_impl(const int id, const DUI_Layout_StackData data) {
@@ -206,7 +206,7 @@ void dui_lay_begin_stack_impl(const int id, const DUI_Layout_StackData data) {
         },
     };
 
-    dui__lay_begin(id, data.index, bounds.tabOrderBack, layout);
+    dui__lay_begin(id, bounds.tabOrderBack, layout);
 }
 
 void dui_lay_begin_spaced_impl(const int id, const DUI_Layout_SpacedData data) {
@@ -222,7 +222,7 @@ void dui_lay_begin_spaced_impl(const int id, const DUI_Layout_SpacedData data) {
         },
     };
 
-    dui__lay_begin(id, data.index, bounds.tabOrderBack, layout);
+    dui__lay_begin(id, bounds.tabOrderBack, layout);
 }
 
 void dui_lay_begin_rectangle_impl(const int id, const DUI_Layout_RectangleData data) {
@@ -233,7 +233,7 @@ void dui_lay_begin_rectangle_impl(const int id, const DUI_Layout_RectangleData d
         .as.rectangle = data.rectangle,
     };
 
-    dui__lay_begin(id, data.index, bounds.tabOrderBack, layout);
+    dui__lay_begin(id, bounds.tabOrderBack, layout);
 }
 
 void dui_lay_spacing(const int amount) {
