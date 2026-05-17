@@ -3,10 +3,22 @@
 
 #include <stdbool.h>
 #include <stddef.h>
+#include <nob.h>
 #include <raylib.h>
 
 #include <dui/layout.h>
 #include <dui/types.h>
+
+// - Ids
+
+typedef struct {
+    Nob_String_View value;
+    unsigned long hash;
+} DUI_Id;
+
+#define DUI_ID(value, length, hash) (CLITERAL(DUI_Id) { { (length), (const char*) (value) }, (hash) })
+
+DUI_Id dui_create_id_cstr(const char* cstr);
 
 // - Elements
 
@@ -16,7 +28,7 @@ typedef struct DUI_ContextElement DUI_ContextElement;
 struct DUI_Element {
     int id;
     int index;
-    int type;
+    DUI_Id type;
     DUI_Kind kind;
     Rectangle bounds;
 
@@ -43,6 +55,8 @@ typedef struct {
 } DUI_ElementIndices;
 
 // - Contexts
+
+#define DUI_CONTEXT_TYPE_ID DUI_ID("dui-context", 11, 4207651769)
 
 struct DUI_ContextElement {
     DUI_Element element;
@@ -76,13 +90,13 @@ typedef enum {
 #define dui_ctx_element_by_id(type, id, kind, tabOrderBack, disabled, element) \
     dui_ctx_element_by_id_impl(type, id, kind, tabOrderBack, disabled, sizeof(*element), (void**)&element)
 DUI_ElementCacheState dui_ctx_element_by_id_impl(
-    int type, int id, DUI_Kind kind, bool tabOrderBack, bool disabled, int size, void** element
+    DUI_Id type, int id, DUI_Kind kind, bool tabOrderBack, bool disabled, int size, void** element
 );
 
 #define dui_ctx_active_element_by_id(type, id, kind, disabled, element, layout_data) \
     dui_ctx_active_element_by_id_impl(type, id, kind, disabled, sizeof(*element), (void**)&element, layout_data)
 DUI_ElementCacheState dui_ctx_active_element_by_id_impl(
-    int type, int id, DUI_Kind kind, bool disabled, int size,
+    DUI_Id type, int id, DUI_Kind kind, bool disabled, int size,
     void** element, DUI_Layout_Data layout_data
 );
 

@@ -47,18 +47,13 @@ static void dui__edit_replace_selection(
 }
 
 bool dui_edit_impl(const int id, const DUI_EditData data) {
-    static int element_type_edit = 0;
-    if (element_type_edit == 0) {
-        element_type_edit = dui_env_next_element_type();
-    }
-
     const int padding = DUI_SPACING(1);
     const int preferred_width = 200;
     const int preferred_height = DUI_FONT_SIZE + 2 * padding;
 
     DUI_EditElement* element;
     if (dui_ctx_active_element_by_id(
-        element_type_edit,
+        DUI_EDIT_TYPE_ID,
         id,
         data.kind,
         data.disabled,

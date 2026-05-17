@@ -4,11 +4,6 @@
 #include <dui/theme.h>
 
 bool dui_checkbox_impl(const int id, const DUI_CheckboxData data) {
-    static int element_type_checkbox = 0;
-    if (element_type_checkbox == 0) {
-        element_type_checkbox = dui_env_next_element_type();
-    }
-
     const int text_width = dui_text_measure(data.caption).x;
     const int padding = DUI_SPACING(1);
     const int preferred_width = text_width + 4 * padding;
@@ -16,7 +11,7 @@ bool dui_checkbox_impl(const int id, const DUI_CheckboxData data) {
 
     DUI_CheckboxElement* element;
     if (dui_ctx_active_element_by_id(
-        element_type_checkbox,
+        DUI_CHECKBOX_TYPE_ID,
         id,
         data.kind,
         data.disabled,

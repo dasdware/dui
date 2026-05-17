@@ -7,6 +7,8 @@
 #include <dui/layout.h>
 #include <dui/types.h>
 
+#define DUI_CHECKBOX_TYPE_ID DUI_ID("dui-checkbox", 12, 591026139)
+
 #define DUI_CHECKBOX_TEXT(kind) DUI_SHADE_DISPATCH(kind, 500, 500, 400)
 #define DUI_CHECKBOX_TEXT_HOVER(kind) DUI_SHADE_DISPATCH(kind, 600, 600, 500)
 #define DUI_CHECKBOX_TEXT_DOWN(kind) DUI_SHADE_DISPATCH(kind, 700, 700, 600)

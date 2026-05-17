@@ -59,7 +59,7 @@ int dui__ctx_next_index_by_id(const int id) {
 }
 
 DUI_ElementCacheState dui_ctx_element_by_id_impl(
-    const int type, const int id, const DUI_Kind kind, const bool tabOrderBack, const bool disabled,
+    const DUI_Id type, const int id, const DUI_Kind kind, const bool tabOrderBack, const bool disabled,
     const int size, void** element
 ) {
     DUI_ContextElement* ctx = dui_ctx();
@@ -68,7 +68,7 @@ DUI_ElementCacheState dui_ctx_element_by_id_impl(
 
     nob_da_foreach(DUI_Element*, it, &ctx->children) {
         DUI_Element* candidate = *it;
-        if (candidate->type == type && candidate->id == id && candidate->index == index) {
+        if (candidate->type.hash == type.hash && candidate->id == id && candidate->index == index) {
             if (!disabled) {
                 dui__ctx_link_tab_order(candidate, tabOrderBack);
             }
@@ -96,7 +96,7 @@ DUI_ElementCacheState dui_ctx_element_by_id_impl(
 }
 
 DUI_ElementCacheState dui_ctx_active_element_by_id_impl(
-    const int type, const int id, const DUI_Kind kind, const bool disabled, const int size,
+    const DUI_Id type, const int id, const DUI_Kind kind, const bool disabled, const int size,
     void** element, const DUI_Layout_Data layout_data
 ) {
     const DUI_Layout_BoundsData bounds_data = dui_lay_rectangle_impl(layout_data);
@@ -110,15 +110,10 @@ DUI_ElementCacheState dui_ctx_active_element_by_id_impl(
 }
 
 void dui_ctx_begin_impl(const int id, const DUI_ContextData data) {
-    static int element_type_context = 0;
-    if (element_type_context == 0) {
-        element_type_context = dui_env_next_element_type();
-    }
-
     DUI_Environment* env = dui_env();
 
     DUI_ContextElement* element;
-    dui_ctx_element_by_id(element_type_context, id, DUI_DEFAULT, data.tabOrderBack, false, element);
+    dui_ctx_element_by_id(DUI_CONTEXT_TYPE_ID, id, DUI_DEFAULT, data.tabOrderBack, false, element);
     element->tabOrderFrontCursor = NULL;
     element->tabOrderBackCursor = NULL;
     element->placed_at_back = data.tabOrderBack;
@@ -228,4 +223,23 @@ DUI_NextState dui_ctx_next_state(
     }
 
     return next_state;
+}
+
+unsigned long dui__djb2_hash(const char* string, const size_t length) {
+    unsigned long hash = 5381;
+    for (size_t i = 0; i < length; i++) {
+        hash = ((hash << 5) + hash) + string[i]; /* hash * 33 + c */
+    }
+    return hash;
+}
+
+DUI_Id dui_create_id_cstr(const char* cstr) {
+    const size_t length = strlen(cstr);
+    return (DUI_Id){
+        .value = {
+            .data = cstr,
+            .count = length
+        },
+        .hash = dui__djb2_hash(cstr, length),
+    };
 }

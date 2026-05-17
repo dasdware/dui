@@ -59,9 +59,3 @@ void dui_env_end() {
 
     dui_handle_global_keys();
 }
-
-int dui_env_next_element_type() {
-    static int current_element_type = 0;
-    current_element_type += 1;
-    return current_element_type;
-}

@@ -8,6 +8,8 @@
 #include <dui/layout.h>
 #include <dui/types.h>
 
+#define DUI_EDIT_TYPE_ID DUI_ID("dui-edit", 8, 3961342074)
+
 #define DUI_EDIT_BG(kind) DUI_SHADE_DISPATCH(kind, 950, 950, 800)
 #define DUI_EDIT_BG_HOVER(kind) DUI_SHADE_DISPATCH(kind, 900,  900, 700)
 #define DUI_EDIT_BG_DISABLED(kind) DUI_DEFAULT_COLOR(800)

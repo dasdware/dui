@@ -11,6 +11,8 @@
 #include <dui/layout.h>
 #include <dui/types.h>
 
+#define DUI_BUTTON_TYPE_ID DUI_ID("dui-button", 10, 1657506960)
+
 // button theming
 #define DUI_BUTTON_BG(kind) DUI_SHADE_DISPATCH(kind, 800, 800, 600)
 #define DUI_BUTTON_BG_HOVER(kind) DUI_SHADE_DISPATCH(kind, 900,  900, 700)
