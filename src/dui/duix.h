@@ -5,7 +5,7 @@
 #include <dui/button.h>
 #include <dui/checkbox.h>
 #include <dui/colors.h>
-#include <dui/context.h>
+#include <dui/element.h>
 #include <dui/edit.h>
 #include <dui/environment.h>
 #include <dui/keyboard.h>

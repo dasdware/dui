@@ -100,6 +100,8 @@ typedef struct {
 #define dui_lay_rectangle(...) dui_lay_rectangle_impl(CLITERAL(DUI_Layout_Data) { __VA_ARGS__ })
 DUI_Layout_BoundsData dui_lay_rectangle_impl(DUI_Layout_Data data);
 
+#define DUI_SCREEN_TYPE_ID DUI_ID("dui-screen", 10, 2301373524)
+
 typedef struct {
     DUI_Layout_Data layout_data;
     int padding;
@@ -108,6 +110,8 @@ typedef struct {
 #define dui_lay_begin_screen(...) dui_lay_begin_screen_impl(__COUNTER__, CLITERAL(DUI_Layout_ScreenData) { __VA_ARGS__ })
 void dui_lay_begin_screen_impl(int id, DUI_Layout_ScreenData data);
 
+#define DUI_ANCHORED_TYPE_ID DUI_ID("dui-anchored", 12, 340178968)
+
 typedef struct {
     DUI_Layout_Data layout_data;
     int gap;
@@ -115,6 +119,8 @@ typedef struct {
 
 #define dui_lay_begin_anchored(...) dui_lay_begin_anchored_impl(__COUNTER__, CLITERAL(DUI_Layout_AnchoredData) { __VA_ARGS__ })
 void dui_lay_begin_anchored_impl(int id, DUI_Layout_AnchoredData data);
+
+#define DUI_STACK_TYPE_ID DUI_ID("dui-stack", 9, 1892438282)
 
 typedef struct {
     DUI_Layout_Data layout_data;
@@ -126,6 +132,8 @@ typedef struct {
 #define dui_lay_begin_stack(...) dui_lay_begin_stack_impl(__COUNTER__, CLITERAL(DUI_Layout_StackData) { __VA_ARGS__ })
 void dui_lay_begin_stack_impl(int id, DUI_Layout_StackData data);
 
+#define DUI_SPACED_TYPE_ID DUI_ID("dui-spaced", 10, 2316177380)
+
 typedef struct {
     DUI_Layout_Data layout_data;
     RL_LayoutDirection direction;
@@ -135,6 +143,8 @@ typedef struct {
 
 #define dui_lay_begin_spaced(...) dui_lay_begin_spaced_impl(__COUNTER__, CLITERAL(DUI_Layout_SpacedData) { __VA_ARGS__ })
 void dui_lay_begin_spaced_impl(int id, DUI_Layout_SpacedData data);
+
+#define DUI_RECTANGLE_TYPE_ID DUI_ID("dui-rectangle", 13, 638527785)
 
 typedef struct {
     DUI_Layout_Data layout_data;

@@ -23,19 +23,6 @@ DUI_Id dui_create_id_cstr(const char* cstr);
 // - Elements
 
 typedef struct DUI_Element DUI_Element;
-typedef struct DUI_ContextElement DUI_ContextElement;
-
-struct DUI_Element {
-    int id;
-    int index;
-    DUI_Id type;
-    DUI_Kind kind;
-    Rectangle bounds;
-
-    DUI_ContextElement* parent;
-    DUI_Element* tabOrderNext;
-    DUI_Element* tabOrderPrev;
-};
 
 typedef struct {
     DUI_Element** items;
@@ -54,12 +41,16 @@ typedef struct {
     size_t capacity;
 } DUI_ElementIndices;
 
-// - Contexts
+struct DUI_Element {
+    int id;
+    int index;
+    DUI_Id type;
+    DUI_Kind kind;
+    Rectangle bounds;
 
-#define DUI_CONTEXT_TYPE_ID DUI_ID("dui-context", 11, 4207651769)
-
-struct DUI_ContextElement {
-    DUI_Element element;
+    DUI_Element* parent;
+    DUI_Element* tabOrderNext;
+    DUI_Element* tabOrderPrev;
 
     DUI_Elements children;
     DUI_ElementIndices indices;
@@ -74,40 +65,38 @@ struct DUI_ContextElement {
 
 typedef struct {
     bool tabOrderBack;
-} DUI_ContextData;
+} DUI_ElementData;
 
-DUI_ContextElement* dui_ctx();
 
-#define dui_ctx_begin(...) dui_ctx_begin_impl(__COUNTER__, (DUI_ContextData) { __VA_ARGS__ })
-void dui_ctx_begin_impl(int id, DUI_ContextData data);
-void dui_ctx_end();
+DUI_Element* dui_element();
+
+#define dui_begin_element(type, ...) dui_begin_element_impl(type, __COUNTER__, (DUI_ElementData) { __VA_ARGS__ })
+void dui_begin_element_impl(DUI_Id type, int id, DUI_ElementData data);
+void dui_end_element();
 
 typedef enum {
     DUI_NEWLY_CREATED,
     DUI_CACHED
 } DUI_ElementCacheState;
 
-#define dui_ctx_element_by_id(type, id, kind, tabOrderBack, disabled, element) \
-    dui_ctx_element_by_id_impl(type, id, kind, tabOrderBack, disabled, sizeof(*element), (void**)&element)
-DUI_ElementCacheState dui_ctx_element_by_id_impl(
+#define dui_get_element(type, id, kind, tabOrderBack, disabled, element) \
+    dui_get_element_impl(type, id, kind, tabOrderBack, disabled, sizeof(*element), (void**)&element)
+DUI_ElementCacheState dui_get_element_impl(
     DUI_Id type, int id, DUI_Kind kind, bool tabOrderBack, bool disabled, int size, void** element
 );
 
-#define dui_ctx_active_element_by_id(type, id, kind, disabled, element, layout_data) \
-    dui_ctx_active_element_by_id_impl(type, id, kind, disabled, sizeof(*element), (void**)&element, layout_data)
-DUI_ElementCacheState dui_ctx_active_element_by_id_impl(
+#define dui_get_active_element(type, id, kind, disabled, element, layout_data) \
+    dui_get_active_element_impl(type, id, kind, disabled, sizeof(*element), (void**)&element, layout_data)
+DUI_ElementCacheState dui_get_active_element_impl(
     DUI_Id type, int id, DUI_Kind kind, bool disabled, int size,
     void** element, DUI_Layout_Data layout_data
 );
-
-void* dui_ctx_allocate_state(int id, int index, size_t size);
-void* dui_ctx_state_by_id(int id, int index);
 
 typedef struct {
     bool activated;
     DUI_State state;
 } DUI_NextState;
 
-DUI_NextState dui_ctx_next_state(DUI_State current_state, bool disabled, DUI_Element* element);
+DUI_NextState dui_next_state(DUI_State current_state, bool disabled, DUI_Element* element);
 
 #endif //DUI_CONTEXT_H

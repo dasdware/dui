@@ -1,14 +1,14 @@
-#include <dui/context.h>
+#include <dui/element.h>
 #include <dui/environment.h>
 
 #include "nob.h"
 
-DUI_ContextElement* dui_ctx() {
-    return dui_env()->context_stack_top;
+DUI_Element* dui_element() {
+    return dui_env()->element_stack_top;
 }
 
-static void dui__ctx_link_tab_order(DUI_Element* element, const bool tabOrderBack) {
-    DUI_ContextElement* parent = element->parent;
+static void dui__link_tab_order(DUI_Element* element, const bool tabOrderBack) {
+    DUI_Element* parent = element->parent;
 
     if (tabOrderBack) {
         if (parent->tabOrderBackCursor == NULL) {
@@ -39,10 +39,10 @@ static void dui__ctx_link_tab_order(DUI_Element* element, const bool tabOrderBac
     }
 }
 
-int dui__ctx_next_index_by_id(const int id) {
-    DUI_ContextElement* ctx = dui_ctx();
+int dui__next_index_by_id(const int id) {
+    DUI_Element* element = dui_element();
 
-    nob_da_foreach(DUI_ElementIndex, it, &ctx->indices) {
+    nob_da_foreach(DUI_ElementIndex, it, &element->indices) {
         if (it->id == id) {
             it->index += 1;
             return it->index;
@@ -53,24 +53,24 @@ int dui__ctx_next_index_by_id(const int id) {
         .id = id,
         .index = 0
     };
-    nob_da_append(&ctx->indices, element_index);
+    nob_da_append(&element->indices, element_index);
 
     return element_index.index;
 }
 
-DUI_ElementCacheState dui_ctx_element_by_id_impl(
+DUI_ElementCacheState dui_get_element_impl(
     const DUI_Id type, const int id, const DUI_Kind kind, const bool tabOrderBack, const bool disabled,
     const int size, void** element
 ) {
-    DUI_ContextElement* ctx = dui_ctx();
+    DUI_Element* parent = dui_element();
     DUI_Environment* env = dui_env();
-    const int index = dui__ctx_next_index_by_id(id);
+    const int index = dui__next_index_by_id(id);
 
-    nob_da_foreach(DUI_Element*, it, &ctx->children) {
+    nob_da_foreach(DUI_Element*, it, &parent->children) {
         DUI_Element* candidate = *it;
         if (candidate->type.hash == type.hash && candidate->id == id && candidate->index == index) {
             if (!disabled) {
-                dui__ctx_link_tab_order(candidate, tabOrderBack);
+                dui__link_tab_order(candidate, tabOrderBack);
             }
             candidate->kind = kind;
             *element = candidate;
@@ -85,23 +85,23 @@ DUI_ElementCacheState dui_ctx_element_by_id_impl(
     new_element->id = id;
     new_element->index = index;
     new_element->kind = kind;
-    new_element->parent = ctx;
-    nob_da_append(&ctx->children, new_element);
+    new_element->parent = parent;
+    nob_da_append(&parent->children, new_element);
 
     if (!disabled) {
-        dui__ctx_link_tab_order(new_element, tabOrderBack);
+        dui__link_tab_order(new_element, tabOrderBack);
     }
     *element = new_element;
     return DUI_NEWLY_CREATED;
 }
 
-DUI_ElementCacheState dui_ctx_active_element_by_id_impl(
+DUI_ElementCacheState dui_get_active_element_impl(
     const DUI_Id type, const int id, const DUI_Kind kind, const bool disabled, const int size,
     void** element, const DUI_Layout_Data layout_data
 ) {
     const DUI_Layout_BoundsData bounds_data = dui_lay_rectangle_impl(layout_data);
 
-    const DUI_ElementCacheState result = dui_ctx_element_by_id_impl(
+    const DUI_ElementCacheState result = dui_get_element_impl(
         type, id, kind, bounds_data.tabOrderBack, disabled, size, element
     );
     ((DUI_Element*)*element)->bounds = bounds_data.bounds;
@@ -109,81 +109,81 @@ DUI_ElementCacheState dui_ctx_active_element_by_id_impl(
     return result;
 }
 
-void dui_ctx_begin_impl(const int id, const DUI_ContextData data) {
+void dui_begin_element_impl(const DUI_Id type, const int id, const DUI_ElementData data) {
     DUI_Environment* env = dui_env();
 
-    DUI_ContextElement* element;
-    dui_ctx_element_by_id(DUI_CONTEXT_TYPE_ID, id, DUI_DEFAULT, data.tabOrderBack, false, element);
+    DUI_Element* element;
+    dui_get_element(type, id, DUI_DEFAULT, data.tabOrderBack, false, element);
     element->tabOrderFrontCursor = NULL;
     element->tabOrderBackCursor = NULL;
     element->placed_at_back = data.tabOrderBack;
     element->indices.count = 0;
 
-    env->context_stack_top = element;
+    env->element_stack_top = element;
 }
 
-void dui_ctx_end() {
+void dui_end_element() {
     DUI_Environment* env = dui_env();
 
-    DUI_ContextElement* ctx = env->context_stack_top;
-    DUI_ContextElement* parent = ctx->element.parent;
+    DUI_Element* element = env->element_stack_top;
+    DUI_Element* parent = element->parent;
 
     assert(parent != NULL && "Cannot end a DUI context that has not begun.");
 
-    if (ctx->tabOrderFrontCursor == NULL) {
-        ctx->tabOrderFront = ctx->tabOrderBackCursor;
-    } else if (ctx->tabOrderBackCursor == NULL) {
-        ctx->tabOrderBack = ctx->tabOrderFrontCursor;
-    } else if (ctx->tabOrderFrontCursor != ctx->tabOrderBackCursor) {
-        ctx->tabOrderFrontCursor->tabOrderNext = ctx->tabOrderBackCursor;
-        ctx->tabOrderBackCursor->tabOrderPrev = ctx->tabOrderFrontCursor;
+    if (element->tabOrderFrontCursor == NULL) {
+        element->tabOrderFront = element->tabOrderBackCursor;
+    } else if (element->tabOrderBackCursor == NULL) {
+        element->tabOrderBack = element->tabOrderFrontCursor;
+    } else if (element->tabOrderFrontCursor != element->tabOrderBackCursor) {
+        element->tabOrderFrontCursor->tabOrderNext = element->tabOrderBackCursor;
+        element->tabOrderBackCursor->tabOrderPrev = element->tabOrderFrontCursor;
     }
 
-    if (!ctx->placed_at_back) {
-        assert(parent->tabOrderFrontCursor == (DUI_Element*)ctx && "Inconsistent context nesting state");
+    if (!element->placed_at_back) {
+        assert(parent->tabOrderFrontCursor == (DUI_Element*)element && "Inconsistent context nesting state");
         DUI_Element* before = parent->tabOrderFrontCursor->tabOrderPrev;
         if (before) {
-            before->tabOrderNext = ctx->tabOrderFront;
-            if (ctx->tabOrderFront) {
-                ctx->tabOrderFront->tabOrderPrev = before;
+            before->tabOrderNext = element->tabOrderFront;
+            if (element->tabOrderFront) {
+                element->tabOrderFront->tabOrderPrev = before;
             }
-            if (ctx->tabOrderBack) {
-                parent->tabOrderFrontCursor = ctx->tabOrderBack;
+            if (element->tabOrderBack) {
+                parent->tabOrderFrontCursor = element->tabOrderBack;
             } else {
                 parent->tabOrderFrontCursor = before;
             }
         } else {
-            parent->tabOrderFront = ctx->tabOrderFront;
-            parent->tabOrderFrontCursor = ctx->tabOrderBack;
+            parent->tabOrderFront = element->tabOrderFront;
+            parent->tabOrderFrontCursor = element->tabOrderBack;
         }
     } else {
-        assert(parent->tabOrderBackCursor == (DUI_Element*)ctx && "Inconsistent context nesting state");
+        assert(parent->tabOrderBackCursor == element && "Inconsistent context nesting state");
         DUI_Element* after = parent->tabOrderBackCursor->tabOrderNext;
         if (after) {
-            after->tabOrderPrev = ctx->tabOrderBack;
-            if (ctx->tabOrderBack) {
-                ctx->tabOrderBack->tabOrderNext = after;
+            after->tabOrderPrev = element->tabOrderBack;
+            if (element->tabOrderBack) {
+                element->tabOrderBack->tabOrderNext = after;
             }
-            if (ctx->tabOrderFront) {
-                parent->tabOrderBackCursor = ctx->tabOrderFront;
+            if (element->tabOrderFront) {
+                parent->tabOrderBackCursor = element->tabOrderFront;
             } else {
                 parent->tabOrderFrontCursor = after;
             }
         } else {
-            parent->tabOrderBack = ctx->tabOrderBack;
-            parent->tabOrderBackCursor = ctx->tabOrderFront;
+            parent->tabOrderBack = element->tabOrderBack;
+            parent->tabOrderBackCursor = element->tabOrderFront;
         }
     }
 
-    if (parent->element.parent == NULL) {
-        parent->tabOrderFront = ctx->tabOrderFront;
-        parent->tabOrderBack = ctx->tabOrderBack;
+    if (parent->parent == NULL) {
+        parent->tabOrderFront = element->tabOrderFront;
+        parent->tabOrderBack = element->tabOrderBack;
     }
 
-    env->context_stack_top = parent;
+    env->element_stack_top = parent;
 }
 
-DUI_NextState dui_ctx_next_state(
+DUI_NextState dui_next_state(
     const DUI_State current_state, const bool disabled, DUI_Element* element
 ) {
     DUI_NextState next_state = {

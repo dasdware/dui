@@ -1,19 +1,18 @@
 #ifndef DUI_ENVIRONMENT_H
 #define DUI_ENVIRONMENT_H
 
-#include <math.h>
 #include <stdbool.h>
 #include <arena.h>
 
 #include <dui/colors.h>
-#include <dui/context.h>
+#include <dui/element.h>
 
 typedef struct {
     Arena memory;
     bool initialized;
 
-    DUI_ContextElement root_context;
-    DUI_ContextElement* context_stack_top;
+    DUI_Element root_element;
+    DUI_Element* element_stack_top;
 
     int focus_frame_offset;
     int focus_frame_width;

@@ -52,7 +52,7 @@ bool dui_edit_impl(const int id, const DUI_EditData data) {
     const int preferred_height = DUI_FONT_SIZE + 2 * padding;
 
     DUI_EditElement* element;
-    if (dui_ctx_active_element_by_id(
+    if (dui_get_active_element(
         DUI_EDIT_TYPE_ID,
         id,
         data.kind,
@@ -74,7 +74,7 @@ bool dui_edit_impl(const int id, const DUI_EditData data) {
     dui_ca_update(&element->background);
     dui_ca_update(&element->border);
 
-    const DUI_NextState next_state = dui_ctx_next_state(
+    const DUI_NextState next_state = dui_next_state(
         element->state,
         data.disabled,
         &element->element

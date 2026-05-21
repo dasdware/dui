@@ -12,7 +12,7 @@ bool dui_button_impl(const int id, const DUI_ButtonData data) {
     const int preferred_height = DUI_FONT_SIZE + 2 * padding;
 
     DUI_ButtonElement* element;
-    if (dui_ctx_active_element_by_id(
+    if (dui_get_active_element(
         DUI_BUTTON_TYPE_ID,
         id,
         data.kind,
@@ -34,7 +34,7 @@ bool dui_button_impl(const int id, const DUI_ButtonData data) {
     dui_ca_update(&element->background);
     dui_ca_update(&element->foreground);
 
-    const DUI_NextState next_state = dui_ctx_next_state(
+    const DUI_NextState next_state = dui_next_state(
         element->state,
         data.disabled,
         &element->element

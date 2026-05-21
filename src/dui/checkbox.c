@@ -10,7 +10,7 @@ bool dui_checkbox_impl(const int id, const DUI_CheckboxData data) {
     const int preferred_height = DUI_FONT_SIZE + 2 * padding;
 
     DUI_CheckboxElement* element;
-    if (dui_ctx_active_element_by_id(
+    if (dui_get_active_element(
         DUI_CHECKBOX_TYPE_ID,
         id,
         data.kind,
@@ -37,7 +37,7 @@ bool dui_checkbox_impl(const int id, const DUI_CheckboxData data) {
         element->check_state = (*data.checked) ? CHECK_CHECKED : CHECK_UNCHECKED;
     }
 
-    const DUI_NextState next_state = dui_ctx_next_state(
+    const DUI_NextState next_state = dui_next_state(
         element->state,
         data.disabled,
         &element->element

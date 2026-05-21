@@ -6,7 +6,7 @@
 DUI_Environment* dui_env() {
     static DUI_Environment environment = {0};
     if (!environment.initialized) {
-        environment.context_stack_top = &environment.root_context;
+        environment.element_stack_top = &environment.root_element;
 
         environment.focus_frame_offset = 0;
         environment.focus_frame_width = 2;
@@ -46,7 +46,7 @@ void dui_env_begin() {
     BeginDrawing();
     dui_env_clear_background();
 
-    dui_env()->root_context.indices.count = 0;
+    dui_env()->root_element.indices.count = 0;
 }
 
 void dui_env_end() {
