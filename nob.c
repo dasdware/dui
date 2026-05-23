@@ -105,18 +105,58 @@ bool build_main() {
     return true;
 }
 
+unsigned long djb2_hash(const char* string, const size_t length) {
+    unsigned long hash = 5381;
+    for (size_t i = 0; i < length; i++) {
+        hash = ((hash << 5) + hash) + string[i]; /* hash * 33 + c */
+    }
+    return hash;
+}
+
+void generate_dui_type_id(const char* type_id) {
+    const size_t length = strlen(type_id);
+    const unsigned long hash = djb2_hash(type_id, length);
+    printf("#define ");
+    for (size_t i = 0; i < length; ++i) {
+        if (isalpha(type_id[i])) {
+            printf("%c", toupper(type_id[i]));
+        } else if (isdigit(type_id[i])) {
+            printf("%c", type_id[i]);
+        } else {
+            printf("_");
+        }
+    }
+    printf("_TYPE_ID DUI_ID(\"%s\", %lld, %lu)\n", type_id, length, hash);
+}
+
 int main(int argc, char** argv) {
     NOB_GO_REBUILD_URSELF(argc, argv);
 
-    nob_mkdir_if_not_exists(BUILD_DIR);
+    const char* program = nob_shift(argv, argc);
 
-    if (!build_raylib() || !build_main()) {
-        return 1;
+    const char* command = NULL;
+    if (argc > 0) {
+        command = nob_shift(argv, argc);
     }
 
-    nob_cmd_append(&cmd, MAIN_OUTPUT);
-    if (!nob_cmd_run(&cmd)) {
-        return 1;
+    if (command == NULL || strcmp(command, "build") == 0) {
+        nob_mkdir_if_not_exists(BUILD_DIR);
+        if (!build_raylib() || !build_main()) {
+            return 1;
+        }
+    }
+
+    if (command == NULL || strcmp(command, "run") == 0) {
+        nob_cmd_append(&cmd, MAIN_OUTPUT);
+        if (!nob_cmd_run(&cmd)) {
+            return 1;
+        }
+    }
+
+    if (strcmp(command, "type_id") == 0) {
+        while (argc > 0) {
+            generate_dui_type_id(nob_shift(argv, argc));
+        }
     }
 
     return 0;
