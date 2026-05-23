@@ -22,6 +22,8 @@ DUI_Id dui_create_id_cstr(const char* cstr);
 
 // - Elements
 
+#define DUI_ROOT_TYPE_ID DUI_ID("dui-root", 8, 3961821432)
+
 typedef struct DUI_Element DUI_Element;
 
 typedef struct {

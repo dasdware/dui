@@ -6,6 +6,7 @@
 DUI_Environment* dui_env() {
     static DUI_Environment environment = {0};
     if (!environment.initialized) {
+        environment.root_element.type = DUI_ROOT_TYPE_ID;
         environment.element_stack_top = &environment.root_element;
 
         environment.focus_frame_offset = 0;
