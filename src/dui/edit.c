@@ -58,7 +58,7 @@ bool dui_edit_impl(const int id, const DUI_EditData data) {
         data.kind,
         data.disabled,
         element,
-        dui_lay_forward(preferred_width, preferred_height, data.layout_data)
+        dui_forward_layout(preferred_width, preferred_height, data.layout_data)
     ) == DUI_NEWLY_CREATED) {
         if (data.disabled) {
             element->background = dui_ca_create(DUI_EDIT_BG_DISABLED(data.kind));
@@ -99,7 +99,7 @@ bool dui_edit_impl(const int id, const DUI_EditData data) {
         }
     }
 
-    const Rectangle client_bounds = dui_lay_padding_all(element->element.bounds, 1);
+    const Rectangle client_bounds = DUI_PADDING_ALL(element->element.bounds, 1);
     if (data.text && dui_env_has_focus(&element->element) && !data.disabled) {
         // MOUSE INTERACTIVITY
         // ======================

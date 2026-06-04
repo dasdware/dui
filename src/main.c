@@ -11,7 +11,7 @@
 int main(void) {
     setlocale(LC_CTYPE, "");
 
-    InitWindow(50 * 16, 50 * 9, "DUI");
+    InitWindow(55 * 16, 55 * 9, "DUI");
     SetTargetFPS(60);
 
     Nob_String_Builder primary_text = {0};
@@ -25,49 +25,45 @@ int main(void) {
 
     bool running = true;
     while (running && !WindowShouldClose()) {
-        dui_main() {
-            dui_screen(.padding = 3) {
+        dui_root() {
+            dui_spaced(.gap = 2, .direction = DUI_HORIZONTAL, .count = 4) {
                 dui_stack(.gap = 2) {
-                    dui_spaced(.gap = 2, .direction = DIRECTION_HORIZONTAL, .count = 4) {
-                        dui_stack(.gap = 2) {
-                            dui_label("Buttons");
+                    dui_label("Buttons");
 
-                            dui_button(.caption = "Primary", .kind = DUI_PRIMARY);
-                            dui_button(.caption = "Secondary", .kind = DUI_SECONDARY);
-                            dui_button(.caption = "Default");
-                            dui_button(.caption = "Disabled", .disabled = true);
-                        }
-
-                        dui_stack(.gap = 2) {
-                            dui_label("Labels");
-                            dui_label("Primary", .kind = DUI_PRIMARY);
-                            dui_label("Secondary", .kind = DUI_SECONDARY);
-                            dui_label("Default");
-                        }
-
-                        dui_stack(.gap = 2) {
-                            dui_label("Checkboxes");
-                            static bool primary_checked = true;
-                            dui_checkbox(.caption = "Primary", .kind = DUI_PRIMARY, .checked = &primary_checked);
-                            dui_checkbox(.caption = "Secondary", .kind = DUI_SECONDARY);
-                            dui_checkbox(.caption = "Default");
-                            dui_checkbox(.caption = "Disabled", .disabled = true);
-                        }
-
-                        dui_stack(.gap = 2) {
-                            dui_label("Edits");
-
-                            dui_edit(.kind = DUI_PRIMARY, .text = &primary_text);
-                            dui_edit(.kind = DUI_SECONDARY, .text = &secondary_text);
-                            dui_edit(.text = &default_text);
-                            dui_edit(.disabled = true, .text = &disabled_text);
-                        }
-                    }
-
-                    if (dui_button(.caption = "Exit", .kind = DUI_PRIMARY, DUI_L(.opposite = true))) {
-                        running = false;
-                    }
+                    dui_button(.caption = "Primary", .kind = DUI_PRIMARY);
+                    dui_button(.caption = "Secondary", .kind = DUI_SECONDARY);
+                    dui_button(.caption = "Default");
+                    dui_button(.caption = "Disabled", .disabled = true);
                 }
+
+                dui_stack(.gap = 2) {
+                    dui_label("Labels");
+                    dui_label("Primary", .kind = DUI_PRIMARY);
+                    dui_label("Secondary", .kind = DUI_SECONDARY);
+                    dui_label("Default");
+                }
+
+                dui_stack(.gap = 2) {
+                    dui_label("Checkboxes");
+                    static bool primary_checked = true;
+                    dui_checkbox(.caption = "Primary", .kind = DUI_PRIMARY, .checked = &primary_checked);
+                    dui_checkbox(.caption = "Secondary", .kind = DUI_SECONDARY);
+                    dui_checkbox(.caption = "Default");
+                    dui_checkbox(.caption = "Disabled", .disabled = true);
+                }
+
+                dui_stack(.gap = 2) {
+                    dui_label("Edits");
+
+                    dui_edit(.kind = DUI_PRIMARY, .text = &primary_text);
+                    dui_edit(.kind = DUI_SECONDARY, .text = &secondary_text);
+                    dui_edit(.text = &default_text);
+                    dui_edit(.disabled = true, .text = &disabled_text);
+                }
+            }
+
+            if (dui_button(.caption = "Exit", .kind = DUI_PRIMARY, DUI_L(.opposite = true))) {
+                running = false;
             }
         }
     }

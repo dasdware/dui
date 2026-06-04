@@ -8,7 +8,7 @@
 #include <dui/animation.h>
 #include <dui/colors.h>
 #include <dui/element.h>
-#include <dui/layout.h>
+#include <dui/layout/layout.h>
 #include <dui/types.h>
 
 #define DUI_BUTTON_TYPE_ID DUI_ID("dui-button", 10, 1657506960)
@@ -23,7 +23,7 @@
 #define DUI_BUTTON_FG_DISABLED(kind) DUI_DEFAULT_COLOR(400)
 
 typedef struct {
-    DUI_Layout_Data layout_data;
+    DUI_LayoutData layout_data;
 
     const char* caption;
     DUI_Kind kind;

@@ -3,11 +3,18 @@
 #include <dui/keyboard.h>
 #include <dui/theme.h>
 
+extern DUI_BoundsData dui__stack_next_bounds(void* element, DUI_LayoutData data);
+extern void dui__stack_reset(void* element);
+
 DUI_Environment* dui_env() {
     static DUI_Environment environment = {0};
     if (!environment.initialized) {
-        environment.root_element.type = DUI_ROOT_TYPE_ID;
-        environment.element_stack_top = &environment.root_element;
+        environment.root_element.layout_element.element.type = DUI_ROOT_TYPE_ID;
+        environment.root_element.layout_element.callback = dui__stack_next_bounds;
+        environment.root_element.layout_element.reset_callback = dui__stack_reset;
+        environment.root_element.gap = DUI_SPACING(2);
+        environment.element_stack_top = &environment.root_element.layout_element.element;
+        environment.layout_element_stack_top = &environment.root_element.layout_element;
 
         environment.focus_frame_offset = 0;
         environment.focus_frame_width = 2;
@@ -43,14 +50,43 @@ bool dui_env_has_focus_impl(const DUI_Element* element) {
     return dui_env()->focused_element == element;
 }
 
-void dui_env_begin() {
+void dui_root_begin() {
     BeginDrawing();
     dui_env_clear_background();
 
-    dui_env()->root_element.indices.count = 0;
+    DUI_LayoutElement* root_layout = &dui_env()->root_element.layout_element;
+    root_layout->element.bounds = (Rectangle){0, 0, GetScreenWidth(), GetScreenHeight()};
+    root_layout->element.bounds = DUI_PADDING_ALL(root_layout->element.bounds, 3);
+
+    if (root_layout->reset_callback) {
+        root_layout->reset_callback(root_layout);
+    }
+
+    DUI_Element* root_element = &root_layout->element;
+    root_element->tabOrderFrontCursor = NULL;
+    root_element->tabOrderBackCursor = NULL;
+    root_element->placed_at_back = false;
+    root_element->indices.count = 0;
 }
 
-void dui_env_end() {
+void dui_root_end() {
+    DUI_Element* root_element = &dui_env()->root_element.layout_element.element;
+    if (root_element->tabOrderFrontCursor == NULL) {
+        root_element->tabOrderFront = root_element->tabOrderBackCursor;
+    } else if (root_element->tabOrderBackCursor == NULL) {
+        root_element->tabOrderBack = root_element->tabOrderFrontCursor;
+    } else if (root_element->tabOrderFrontCursor != root_element->tabOrderBackCursor) {
+        root_element->tabOrderFrontCursor->tabOrderNext = root_element->tabOrderBackCursor;
+        root_element->tabOrderBackCursor->tabOrderPrev = root_element->tabOrderFrontCursor;
+    }
+
+    if (root_element->tabOrderBack != NULL) {
+        root_element->tabOrderBack->tabOrderNext = root_element->tabOrderFront;
+    }
+    if (root_element->tabOrderFront != NULL) {
+        root_element->tabOrderFront->tabOrderBack = root_element->tabOrderBack;
+    }
+
     const DUI_Element* focused_element = dui_env()->focused_element;
     if (focused_element) {
         dui_env_draw_focus_frame(focused_element->bounds, DUI_FOCUS_COLOR(focused_element->kind));

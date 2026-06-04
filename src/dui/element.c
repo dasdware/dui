@@ -97,9 +97,9 @@ DUI_ElementCacheState dui_get_element_impl(
 
 DUI_ElementCacheState dui_get_active_element_impl(
     const DUI_Id type, const int id, const DUI_Kind kind, const bool disabled, const int size,
-    void** element, const DUI_Layout_Data layout_data
+    void** element, const DUI_LayoutData layout_data
 ) {
-    const DUI_Layout_BoundsData bounds_data = dui_lay_rectangle_impl(layout_data);
+    const DUI_BoundsData bounds_data = dui_next_bounds_impl(layout_data);
 
     const DUI_ElementCacheState result = dui_get_element_impl(
         type, id, kind, bounds_data.tabOrderBack, disabled, size, element
@@ -140,7 +140,7 @@ void dui_end_element() {
     }
 
     if (!element->placed_at_back) {
-        assert(parent->tabOrderFrontCursor == (DUI_Element*)element && "Inconsistent context nesting state");
+        assert(parent->tabOrderFrontCursor == element && "Inconsistent context nesting state");
         DUI_Element* before = parent->tabOrderFrontCursor->tabOrderPrev;
         if (before) {
             before->tabOrderNext = element->tabOrderFront;
@@ -175,10 +175,10 @@ void dui_end_element() {
         }
     }
 
-    if (parent->parent == NULL) {
-        parent->tabOrderFront = element->tabOrderFront;
-        parent->tabOrderBack = element->tabOrderBack;
-    }
+    // if (parent->parent == NULL) {
+    //     parent->tabOrderFront = element->tabOrderFront;
+    //     parent->tabOrderBack = element->tabOrderBack;
+    // }
 
     env->element_stack_top = parent;
 }

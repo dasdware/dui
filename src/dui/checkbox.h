@@ -4,7 +4,7 @@
 #include <dui/animation.h>
 #include <dui/colors.h>
 #include <dui/element.h>
-#include <dui/layout.h>
+#include <dui/layout/layout.h>
 #include <dui/types.h>
 
 #define DUI_CHECKBOX_TYPE_ID DUI_ID("dui-checkbox", 12, 591026139)
@@ -28,7 +28,7 @@ typedef enum {
 } DUI_CheckState;
 
 typedef struct {
-    DUI_Layout_Data layout_data;
+    DUI_LayoutData layout_data;
 
     const char* caption;
     DUI_Kind kind;

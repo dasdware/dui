@@ -2,7 +2,7 @@
 #define DUI_LABEL_H
 
 #include <dui/colors.h>
-#include <dui/layout.h>
+#include <dui/layout/layout.h>
 
 #define DUI_LABEL_TYPE_ID DUI_ID("dui-label", 9, 1883455188)
 
@@ -10,7 +10,7 @@
 #define DUI_LABEL_TEXT_COLOR(kind) DUI_SHADE_DISPATCH(kind, 500, 500, 300)
 
 typedef struct {
-    DUI_Layout_Data layout_data;
+    DUI_LayoutData layout_data;
 
     DUI_Kind kind;
 } DUI_LabelData;

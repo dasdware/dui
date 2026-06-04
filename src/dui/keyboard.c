@@ -44,9 +44,9 @@ void dui_handle_global_keys() {
             }
         } else {
             if (IsKeyDown(KEY_LEFT_SHIFT) || IsKeyDown(KEY_RIGHT_SHIFT)) {
-                dui_env_focus(dui_env()->root_element.tabOrderBack);
+                dui_env_focus(dui_env()->root_element.layout_element.element.tabOrderBack);
             } else {
-                dui_env_focus(dui_env()->root_element.tabOrderFront);
+                dui_env_focus(dui_env()->root_element.layout_element.element.tabOrderFront);
             }
         }
     }

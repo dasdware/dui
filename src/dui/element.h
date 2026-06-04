@@ -6,7 +6,7 @@
 #include <nob.h>
 #include <raylib.h>
 
-#include <dui/layout.h>
+#include <dui/layout/types.h>
 #include <dui/types.h>
 
 // - Ids
@@ -91,7 +91,7 @@ DUI_ElementCacheState dui_get_element_impl(
     dui_get_active_element_impl(type, id, kind, disabled, sizeof(*element), (void**)&element, layout_data)
 DUI_ElementCacheState dui_get_active_element_impl(
     DUI_Id type, int id, DUI_Kind kind, bool disabled, int size,
-    void** element, DUI_Layout_Data layout_data
+    void** element, DUI_LayoutData layout_data
 );
 
 typedef struct {

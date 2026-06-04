@@ -16,7 +16,7 @@ bool dui_checkbox_impl(const int id, const DUI_CheckboxData data) {
         data.kind,
         data.disabled,
         element,
-        dui_lay_forward(preferred_width, preferred_height, data.layout_data)
+        dui_forward_layout(preferred_width, preferred_height, data.layout_data)
     ) == DUI_NEWLY_CREATED) {
         if (data.disabled) {
             element->text_color = dui_ca_create(DUI_CHECKBOX_TEXT_DISABLED(data.kind));
@@ -72,12 +72,12 @@ bool dui_checkbox_impl(const int id, const DUI_CheckboxData data) {
         }
     }
 
-    Rectangle box_bounds = dui_lay_padding(element->element.bounds, 1, 1, 0, 1);
+    Rectangle box_bounds = DUI_PADDING(element->element.bounds, 1, 1, 0, 1);
     box_bounds.width = box_bounds.height;
 
     DrawRectangleRec(box_bounds, element->box_color.current);
     if (element->check_state == CHECK_CHECKED) {
-        const Rectangle mark_bounds = dui_lay_padding_all(box_bounds, 1);
+        const Rectangle mark_bounds = DUI_PADDING_ALL(box_bounds, 1);
         DrawLineEx(
             CLITERAL(Vector2){mark_bounds.x, mark_bounds.y + mark_bounds.height / 2},
             CLITERAL(Vector2){mark_bounds.x + mark_bounds.width / 2.25, mark_bounds.y + mark_bounds.height},
@@ -93,7 +93,7 @@ bool dui_checkbox_impl(const int id, const DUI_CheckboxData data) {
     }
 
     if (data.caption) {
-        const Rectangle caption_bounds = dui_lay_padding(element->element.bounds, 7, 0, 0, 0);
+        const Rectangle caption_bounds = DUI_PADDING(element->element.bounds, 7, 0, 0, 0);
         dui_text(
             data.caption,
             caption_bounds,
