@@ -90,9 +90,11 @@ bool build_main() {
     nob_cmd_append(&cmd, "./src/dui/keyboard.c");
     nob_cmd_append(&cmd, "./src/dui/label.c");
     nob_cmd_append(&cmd, "./src/dui/layout/layout.c");
+    nob_cmd_append(&cmd, "./src/dui/layout/anchored.c");
     nob_cmd_append(&cmd, "./src/dui/layout/screen.c");
     nob_cmd_append(&cmd, "./src/dui/layout/spaced.c");
     nob_cmd_append(&cmd, "./src/dui/layout/stack.c");
+    nob_cmd_append(&cmd, "./src/dui/layout/window.c");
     nob_cmd_append(&cmd, "./src/dui/text.c");
     nob_cmd_append(&cmd, "./src/main.c");
     nob_cmd_append(&cmd, "-lraylib");

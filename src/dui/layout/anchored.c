@@ -1,7 +1,7 @@
 #include <dui/layout/anchored.h>
 #include <dui/environment.h>
 
-DUI_BoundsData dui__anchored_next_bounds(void* element, const DUI_LayoutData data) {
+DUI_BoundsData dui__anchored_next_bounds(void* element, DUI_LayoutData data) {
     DUI_AnchoredElement* anchored_element = element;
 
     DUI_BoundsData result = {
@@ -61,7 +61,7 @@ void dui__anchored_reset(void* element) {
     anchored_element->inset_bottom = 0;
 }
 
-void dui_begin_anchored_impl(const int id, const DUI_StackData data) {
+void dui_begin_anchored_impl(const int id, const DUI_AnchoredData data) {
     DUI_AnchoredElement* element;
     dui_begin_layout(DUI_ANCHORED_TYPE_ID, id, data.layout_data, element);
     element->layout_element.callback = dui__anchored_next_bounds;

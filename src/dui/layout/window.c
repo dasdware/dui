@@ -1,7 +1,7 @@
 #include <dui/layout/window.h>
 #include <dui/environment.h>
 
-DUI_BoundsData dui__window_next_bounds(const void* element, const DUI_LayoutData data) {
+DUI_BoundsData dui__window_next_bounds(void* element, DUI_LayoutData data) {
     NOB_UNUSED(data);
     const DUI_WindowElement* window_element = element;
 
