@@ -22,7 +22,7 @@ void dui_begin_window_impl(const int id, const DUI_WindowData data) {
     element->layout_element.callback = dui__window_next_bounds;
     element->bounds = data.bounds;
 
-    const DUI_Window* window = dui_enqueue_window(data.bounds);
+    const DUI_Window* window = dui_enqueue_window(data.bounds, data.transparency);
     BeginTextureMode(window->texture);
 }
 

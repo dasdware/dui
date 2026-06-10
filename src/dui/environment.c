@@ -105,7 +105,12 @@ void dui_root_end() {
             0, DUI_WINDOWS_HEIGHT_CAPACITY - window->bounds.height, window->bounds.width, -window->bounds.height
         };
         const Vector2 position = {window->bounds.x, window->bounds.y};
-        DrawTextureRec(window->texture.texture, bounds, position, WHITE);
+        if (window->transparency != 0) {
+            const Color blend = {255, 255, 255, 255 * (1 - window->transparency)};
+            DrawTextureRec(window->texture.texture, bounds, position, blend);
+        } else {
+            DrawTextureRec(window->texture.texture, bounds, position, WHITE);
+        }
     }
 
     EndDrawing();
@@ -113,7 +118,7 @@ void dui_root_end() {
     dui_handle_global_keys();
 }
 
-DUI_Window* dui_enqueue_window(const Rectangle bounds) {
+DUI_Window* dui_enqueue_window(const Rectangle bounds, const float transparency) {
     NOB_ASSERT(dui_env()->window_count < DUI_WINDOWS_CAPACITY - 1);
     NOB_ASSERT(bounds.width <= DUI_WINDOWS_WIDTH_CAPACITY);
     NOB_ASSERT(bounds.height < DUI_WINDOWS_HEIGHT_CAPACITY);
@@ -125,6 +130,7 @@ DUI_Window* dui_enqueue_window(const Rectangle bounds) {
     }
 
     window->bounds = bounds;
+    window->transparency = transparency;
 
     return window;
 }

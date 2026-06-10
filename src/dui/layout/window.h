@@ -10,6 +10,7 @@ typedef struct {
     DUI_LayoutData layout_data;
 
     Rectangle bounds;
+    float transparency;
 } DUI_WindowData;
 
 typedef struct {

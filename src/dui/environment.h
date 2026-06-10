@@ -12,6 +12,7 @@
 typedef struct {
     RenderTexture2D texture;
     bool allocated;
+    float transparency;
     Rectangle bounds;
 } DUI_Window;
 
@@ -59,6 +60,6 @@ void dui_env_focus_impl(DUI_Element* element);
 #define dui_env_has_focus(element) dui_env_has_focus_impl((DUI_Element*) (element))
 bool dui_env_has_focus_impl(const DUI_Element* element);
 
-DUI_Window* dui_enqueue_window(Rectangle bounds);
+DUI_Window* dui_enqueue_window(Rectangle bounds, float transparency);
 
 #endif // DUI_ENVIRONMENT_H
