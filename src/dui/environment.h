@@ -10,6 +10,16 @@
 #include <dui/layout/stack.h>
 
 typedef struct {
+    RenderTexture2D texture;
+    bool allocated;
+    Rectangle bounds;
+} DUI_Window;
+
+#define DUI_WINDOWS_WIDTH_CAPACITY 512
+#define DUI_WINDOWS_HEIGHT_CAPACITY 512
+#define DUI_WINDOWS_CAPACITY 8
+
+typedef struct {
     Arena memory;
     bool initialized;
 
@@ -23,6 +33,11 @@ typedef struct {
     Font font;
 
     DUI_Element* focused_element;
+
+    DUI_Window windows[DUI_WINDOWS_CAPACITY];
+    size_t window_count;
+    Rectangle previous_windows_bounds[DUI_WINDOWS_CAPACITY];
+    size_t previous_window_count;
 } DUI_Environment;
 
 DUI_Environment* dui_env();
@@ -43,5 +58,7 @@ void dui_env_focus_impl(DUI_Element* element);
 
 #define dui_env_has_focus(element) dui_env_has_focus_impl((DUI_Element*) (element))
 bool dui_env_has_focus_impl(const DUI_Element* element);
+
+DUI_Window* dui_enqueue_window(Rectangle bounds);
 
 #endif // DUI_ENVIRONMENT_H

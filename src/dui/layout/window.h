@@ -10,14 +10,12 @@ typedef struct {
     DUI_LayoutData layout_data;
 
     Rectangle bounds;
-    bool floating;
 } DUI_WindowData;
 
 typedef struct {
     DUI_LayoutElement layout_element;
 
     Rectangle bounds;
-    bool floating;
 } DUI_WindowElement;
 
 #define dui_window(...) dui_window_impl_(__COUNTER__, __VA_ARGS__)
@@ -29,6 +27,7 @@ typedef struct {
 #define dui_begin_window(...) dui_begin_window_impl(__COUNTER__, CLITERAL(DUI_WindowData) { __VA_ARGS__ })
 void dui_begin_window_impl(int id, DUI_WindowData data);
 
-#define dui_end_window dui_end_layout
+#define dui_end_window dui_end_window_impl
+void dui_end_window_impl();
 
 #endif // DUI_LAYOUT__WINDOW_H

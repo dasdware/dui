@@ -5,20 +5,29 @@ DUI_BoundsData dui__window_next_bounds(void* element, DUI_LayoutData data) {
     NOB_UNUSED(data);
     const DUI_WindowElement* window_element = element;
 
-    DUI_BoundsData result = {
-        .bounds = window_element->layout_element.element.bounds,
+    return CLITERAL(DUI_BoundsData){
+        .bounds = {
+            .x = 0,
+            .y = 0,
+            .width = window_element->bounds.width,
+            .height = window_element->bounds.height
+        },
         .tabOrderBack = false,
     };
-
-    result.bounds = window_element->bounds;
-
-    return result;
 }
 
 void dui_begin_window_impl(const int id, const DUI_WindowData data) {
     DUI_WindowElement* element;
-    dui_begin_layout(DUI_WINDOW_TYPE_ID, id, data.layout_data, element);
+    dui_begin_inactive_layout(DUI_WINDOW_TYPE_ID, id, element);
     element->layout_element.callback = dui__window_next_bounds;
     element->bounds = data.bounds;
-    element->floating = data.floating;
+
+    const DUI_Window* window = dui_enqueue_window(data.bounds);
+    BeginTextureMode(window->texture);
 }
+
+void dui_end_window_impl() {
+    EndTextureMode();
+    dui_end_layout();
+}
+

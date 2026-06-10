@@ -67,6 +67,13 @@ void dui_root_begin() {
     root_element->tabOrderBackCursor = NULL;
     root_element->placed_at_back = false;
     root_element->indices.count = 0;
+
+    DUI_Environment* env = dui_env();
+    env->previous_window_count = env->window_count;
+    for (size_t i = 0; i < env->window_count; ++i) {
+        env->previous_windows_bounds[i] = env->windows[i].bounds;
+    }
+    env->window_count = 0;
 }
 
 void dui_root_end() {
@@ -92,7 +99,32 @@ void dui_root_end() {
         dui_env_draw_focus_frame(focused_element->bounds, DUI_FOCUS_COLOR(focused_element->kind));
     }
 
+    for (size_t i = 0; i < dui_env()->window_count; ++i) {
+        const DUI_Window* window = &dui_env()->windows[i];
+        const Rectangle bounds = {
+            0, DUI_WINDOWS_HEIGHT_CAPACITY - window->bounds.height, window->bounds.width, -window->bounds.height
+        };
+        const Vector2 position = {window->bounds.x, window->bounds.y};
+        DrawTextureRec(window->texture.texture, bounds, position, WHITE);
+    }
+
     EndDrawing();
 
     dui_handle_global_keys();
+}
+
+DUI_Window* dui_enqueue_window(const Rectangle bounds) {
+    NOB_ASSERT(dui_env()->window_count < DUI_WINDOWS_CAPACITY - 1);
+    NOB_ASSERT(bounds.width <= DUI_WINDOWS_WIDTH_CAPACITY);
+    NOB_ASSERT(bounds.height < DUI_WINDOWS_HEIGHT_CAPACITY);
+
+    DUI_Window* window = &dui_env()->windows[dui_env()->window_count++];
+    if (!window->allocated) {
+        window->texture = LoadRenderTexture(DUI_WINDOWS_WIDTH_CAPACITY, DUI_WINDOWS_HEIGHT_CAPACITY);
+        window->allocated = true;
+    }
+
+    window->bounds = bounds;
+
+    return window;
 }

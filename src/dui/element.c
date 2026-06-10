@@ -196,25 +196,39 @@ DUI_NextState dui_next_state(
         return next_state;
     }
 
-    const bool hovered = CheckCollisionPointRec(GetMousePosition(), element->bounds);
-    if (IsMouseButtonReleased(MOUSE_LEFT_BUTTON)) {
-        if (current_state == STATE_DOWN && hovered) {
-            next_state.activated = true;
-        }
 
-        next_state.state = STATE_NORMAL;
+    const Vector2 mouse_position = GetMousePosition();
+    const DUI_Environment* env = dui_env();
+
+    bool mouse_blocked = false;
+    for (size_t i = 0; i < env->previous_window_count; ++i) {
+        if (CheckCollisionPointRec(mouse_position, env->previous_windows_bounds[i])) {
+            mouse_blocked = true;
+            break;
+        }
     }
 
-    if (hovered) {
-        if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
-            next_state.state = STATE_DOWN;
-            dui_env_focus(element);
-        } else if (current_state != STATE_HOVER && current_state != STATE_DOWN) {
-            next_state.state = STATE_HOVER;
-        }
-    } else {
-        if (current_state == STATE_HOVER) {
+    if (!mouse_blocked) {
+        const bool hovered = CheckCollisionPointRec(mouse_position, element->bounds);
+        if (IsMouseButtonReleased(MOUSE_LEFT_BUTTON)) {
+            if (current_state == STATE_DOWN && hovered) {
+                next_state.activated = true;
+            }
+
             next_state.state = STATE_NORMAL;
+        }
+
+        if (hovered) {
+            if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+                next_state.state = STATE_DOWN;
+                dui_env_focus(element);
+            } else if (current_state != STATE_HOVER && current_state != STATE_DOWN) {
+                next_state.state = STATE_HOVER;
+            }
+        } else {
+            if (current_state == STATE_HOVER) {
+                next_state.state = STATE_NORMAL;
+            }
         }
     }
 

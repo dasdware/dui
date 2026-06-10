@@ -26,6 +26,20 @@ void dui_begin_layout_impl(
     }
 }
 
+void dui_begin_inactive_layout_impl(
+    const DUI_Id type, const int id, const size_t size, void** element
+) {
+    dui_get_element_impl(type, id, DUI_DEFAULT, false, true, size, element);
+
+    DUI_LayoutElement* layout_element = *element;
+    layout_element->parent_layout_element = dui_env()->layout_element_stack_top;
+    dui_env()->layout_element_stack_top = layout_element;
+
+    if (layout_element->reset_callback) {
+        layout_element->reset_callback(layout_element);
+    }
+}
+
 void dui_end_layout() {
     dui_env()->layout_element_stack_top = dui_env()->layout_element_stack_top->parent_layout_element;
 }

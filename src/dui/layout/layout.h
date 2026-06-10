@@ -41,6 +41,9 @@ DUI_BoundsData dui_next_bounds_impl(DUI_LayoutData layout_data);
 #define dui_begin_layout(type, id, data, element) dui_begin_layout_impl(type, id, data, sizeof(*element), (void**)&element)
 void dui_begin_layout_impl(DUI_Id type, int id, DUI_LayoutData data, size_t size, void** element);
 
+#define dui_begin_inactive_layout(type, id, element) dui_begin_inactive_layout_impl(type, id, sizeof(*element), (void**)&element)
+void dui_begin_inactive_layout_impl(DUI_Id type, int id, size_t size, void** element);
+
 void dui_end_layout();
 
 DUI_LayoutData dui_forward_layout(int preferred_width, int preferred_height, DUI_LayoutData data);
