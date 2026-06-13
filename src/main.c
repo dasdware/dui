@@ -26,7 +26,11 @@ int main(void) {
     bool running = true;
     while (running && !WindowShouldClose()) {
         dui_root() {
-            dui_spaced(.gap = 2, .direction = DUI_HORIZONTAL, .count = 4) {
+            if (dui_button(.caption = "Exit", .kind = DUI_PRIMARY, DUI_L(.opposite = true))) {
+                running = false;
+            }
+
+            dui_grid(.gap = 2, .direction = DUI_HORIZONTAL, .columns = 4, .rows = 2, DUI_L(.remaining = true)) {
                 dui_stack(.gap = 2) {
                     dui_label("Buttons");
 
@@ -60,10 +64,6 @@ int main(void) {
                     dui_edit(.text = &default_text);
                     dui_edit(.disabled = true, .text = &disabled_text);
                 }
-            }
-
-            if (dui_button(.caption = "Exit", .kind = DUI_PRIMARY, DUI_L(.opposite = true))) {
-                running = false;
             }
         }
     }
