@@ -12,7 +12,7 @@ DUI_Environment* dui_env() {
         environment.root_element.layout_element.element.type = DUI_ROOT_TYPE_ID;
         environment.root_element.layout_element.callback = dui__stack_next_bounds;
         environment.root_element.layout_element.reset_callback = dui__stack_reset;
-        environment.root_element.gap = DUI_SPACING(2);
+        environment.root_element.gap = 2;
         environment.element_stack_top = &environment.root_element.layout_element.element;
         environment.layout_element_stack_top = &environment.root_element.layout_element;
 
