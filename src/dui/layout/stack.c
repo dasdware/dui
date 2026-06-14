@@ -1,7 +1,7 @@
 #include <dui/layout/stack.h>
 #include <dui/environment.h>
 
-DUI_BoundsData dui__stack_next_bounds(void* element, const DUI_LayoutData data) {
+DUI_BoundsData dui__stack_next_bounds(void* element, const DUI_Placement placement) {
     DUI_StackElement* stack_element = element;
 
     DUI_BoundsData result = {
@@ -10,10 +10,10 @@ DUI_BoundsData dui__stack_next_bounds(void* element, const DUI_LayoutData data) 
     };
 
     int item_size = (stack_element->direction == DUI_HORIZONTAL)
-                        ? max(data.size, data.width)
-                        : max(data.size, data.height);
+                        ? max(placement.size, placement.width)
+                        : max(placement.size, placement.height);
 
-    if (data.remaining) {
+    if (placement.remaining) {
         item_size = (stack_element->direction == DUI_HORIZONTAL)
                         ? result.bounds.width - stack_element->inset_begin - stack_element->inset_end
                         : result.bounds.height - stack_element->inset_begin - stack_element->inset_end;
@@ -22,7 +22,7 @@ DUI_BoundsData dui__stack_next_bounds(void* element, const DUI_LayoutData data) 
     }
 
     if (stack_element->direction == DUI_HORIZONTAL) {
-        if (data.opposite) {
+        if (placement.opposite) {
             result.bounds.x += result.bounds.width - stack_element->inset_end - item_size;
             stack_element->inset_end += item_size + DUI_SPACING(stack_element->gap);
             result.tabOrderBack = true;
@@ -32,7 +32,7 @@ DUI_BoundsData dui__stack_next_bounds(void* element, const DUI_LayoutData data) 
         }
         result.bounds.width = item_size;
     } else {
-        if (data.opposite) {
+        if (placement.opposite) {
             result.bounds.y += result.bounds.height - stack_element->inset_end - item_size;
             stack_element->inset_end += item_size + DUI_SPACING(stack_element->gap);
             result.tabOrderBack = true;
@@ -53,7 +53,7 @@ void dui__stack_reset(void* element) {
 
 void dui_begin_stack_impl(const int id, const DUI_StackData data) {
     DUI_StackElement* element;
-    dui_begin_layout(DUI_STACK_TYPE_ID, id, data.layout_data, element);
+    dui_begin_layout(DUI_STACK_TYPE_ID, id, data.placement, element);
     element->layout_element.callback = dui__stack_next_bounds;
     element->layout_element.reset_callback = dui__stack_reset;
     element->direction = data.direction;

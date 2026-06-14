@@ -26,11 +26,11 @@ int main(void) {
     bool running = true;
     while (running && !WindowShouldClose()) {
         dui_root() {
-            if (dui_button(.caption = "Exit", .kind = DUI_PRIMARY, DUI_L(.opposite = true))) {
+            if (dui_button(.caption = "Exit", .kind = DUI_PRIMARY, DUI_P(.opposite = true))) {
                 running = false;
             }
 
-            dui_grid(.gap = 2, .direction = DUI_HORIZONTAL, .columns = 4, .rows = 2, DUI_L(.remaining = true)) {
+            dui_grid(.gap = 2, .direction = DUI_HORIZONTAL, .columns = 4, .rows = 2, DUI_P(.remaining = true)) {
                 dui_stack(.gap = 2) {
                     dui_label("Buttons");
 

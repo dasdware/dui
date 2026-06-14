@@ -3,7 +3,7 @@
 #include <dui/keyboard.h>
 #include <dui/theme.h>
 
-extern DUI_BoundsData dui__stack_next_bounds(void* element, DUI_LayoutData data);
+extern DUI_BoundsData dui__stack_next_bounds(void* element, DUI_Placement placement);
 extern void dui__stack_reset(void* element);
 
 DUI_Environment* dui_env() {

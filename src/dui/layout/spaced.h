@@ -11,7 +11,7 @@
 #define DUI_SPACED_TYPE_ID DUI_ID("dui-spaced", 10, 2316177380)
 
 typedef struct {
-    DUI_LayoutData layout_data;
+    DUI_Placement placement;
     DUI_Direction direction;
     int count;
     int gap;

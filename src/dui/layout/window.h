@@ -7,7 +7,7 @@
 #define DUI_WINDOW_TYPE_ID DUI_ID("dui-window", 10, 2464886124)
 
 typedef struct {
-    DUI_LayoutData layout_data;
+    DUI_Placement placement;
 
     Rectangle bounds;
     float transparency;

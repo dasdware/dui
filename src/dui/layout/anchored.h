@@ -7,7 +7,7 @@
 #define DUI_ANCHORED_TYPE_ID DUI_ID("dui-anchored", 12, 340178968)
 
 typedef struct {
-    DUI_LayoutData layout_data;
+    DUI_Placement placement;
     int gap;
 } DUI_AnchoredData;
 

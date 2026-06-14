@@ -25,7 +25,7 @@
 #define DUI_EDIT_BACK_SCROLL_STEP 50
 
 typedef struct {
-    DUI_LayoutData layout_data;
+    DUI_Placement placement;
 
     DUI_Kind kind;
     bool disabled;

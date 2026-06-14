@@ -1,7 +1,7 @@
 #include <dui/layout/spaced.h>
 #include <dui/environment.h>
 
-DUI_BoundsData dui__spaced_next_bounds(void* element, const DUI_LayoutData data) {
+DUI_BoundsData dui__spaced_next_bounds(void* element, const DUI_Placement placement) {
     DUI_SpacedElement* spaced_element = element;
 
     DUI_BoundsData result = {
@@ -9,7 +9,7 @@ DUI_BoundsData dui__spaced_next_bounds(void* element, const DUI_LayoutData data)
         .tabOrderBack = false,
     };
 
-    const int weight = max(data.weight, 1);
+    const int weight = max(placement.weight, 1);
     switch (spaced_element->direction) {
     case DUI_HORIZONTAL: {
         const float cell_size = 1.0 * (result.bounds.width - (spaced_element->count - 1) * DUI_SPACING(
@@ -44,7 +44,7 @@ void dui__spaced_reset(void* element) {
 
 void dui_begin_spaced_impl(const int id, const DUI_SpacedData data) {
     DUI_SpacedElement* element;
-    dui_begin_layout(DUI_SPACED_TYPE_ID, id, data.layout_data, element);
+    dui_begin_layout(DUI_SPACED_TYPE_ID, id, data.placement, element);
     element->layout_element.callback = dui__spaced_next_bounds;
     element->layout_element.reset_callback = dui__spaced_reset;
     element->direction = data.direction;

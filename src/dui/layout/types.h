@@ -9,7 +9,7 @@ typedef enum {
     DUI_TOP,
     DUI_RIGHT,
     DUI_BOTTOM,
-} DUI_LayoutAnchor;
+} DUI_Anchor;
 
 typedef struct {
     int size;
@@ -18,11 +18,11 @@ typedef struct {
     int weight;
     bool remaining;
     bool opposite;
-    DUI_LayoutAnchor anchor;
-} DUI_LayoutData;
+    DUI_Anchor anchor;
+} DUI_Placement;
 
-#define DUI_LAYOUT(...) .layout_data = CLITERAL(DUI_LayoutData) { __VA_ARGS__ }
-#define DUI_L DUI_LAYOUT
+#define DUI_PLACEMENT(...) .placement = CLITERAL(DUI_Placement) { __VA_ARGS__ }
+#define DUI_P DUI_PLACEMENT
 
 
 #endif // DUI_LAYOUT_TYPES_H

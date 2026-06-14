@@ -7,7 +7,7 @@
 #define DUI_SCREEN_TYPE_ID DUI_ID("dui-screen", 10, 2301373524)
 
 typedef struct {
-    DUI_LayoutData layout_data;
+    DUI_Placement placement;
     int padding;
 } DUI_ScreenData;
 

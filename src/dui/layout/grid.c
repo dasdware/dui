@@ -1,7 +1,7 @@
 #include <dui/layout/grid.h>
 #include <dui/environment.h>
 
-DUI_BoundsData dui__grid_next_bounds(void* element, const DUI_LayoutData data) {
+DUI_BoundsData dui__grid_next_bounds(void* element, const DUI_Placement placement) {
     DUI_GridElement* grid_element = element;
 
     DUI_BoundsData result = {
@@ -10,10 +10,10 @@ DUI_BoundsData dui__grid_next_bounds(void* element, const DUI_LayoutData data) {
     };
 
     const int horizontal_weight = (grid_element->direction == DUI_HORIZONTAL)
-                                      ? min(max(data.weight, 1), grid_element->columns - grid_element->column)
+                                      ? min(max(placement.weight, 1), grid_element->columns - grid_element->column)
                                       : 1;
     const int vertical_weight = (grid_element->direction == DUI_VERTICAL)
-                                    ? min(max(data.weight, 1), grid_element->rows - grid_element->row)
+                                    ? min(max(placement.weight, 1), grid_element->rows - grid_element->row)
                                     : 1;
     const int gap_px = DUI_SPACING(grid_element->gap);
     const float cell_width = 1.0 * (result.bounds.width - (grid_element->columns - 1) * gap_px) /
@@ -51,7 +51,7 @@ void dui__grid_reset(void* element) {
 
 void dui_begin_grid_impl(const int id, const DUI_GridData data) {
     DUI_GridElement* element;
-    dui_begin_layout(DUI_GRID_TYPE_ID, id, data.layout_data, element);
+    dui_begin_layout(DUI_GRID_TYPE_ID, id, data.placement, element);
     element->layout_element.callback = dui__grid_next_bounds;
     element->layout_element.reset_callback = dui__grid_reset;
     element->direction = data.direction;

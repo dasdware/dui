@@ -7,7 +7,7 @@
 #define DUI_STACK_TYPE_ID DUI_ID("dui-stack", 9, 1892438282)
 
 typedef struct {
-    DUI_LayoutData layout_data;
+    DUI_Placement placement;
 
     DUI_Direction direction;
     int item_size;

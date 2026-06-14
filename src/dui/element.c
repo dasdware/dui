@@ -97,9 +97,9 @@ DUI_ElementCacheState dui_get_element_impl(
 
 DUI_ElementCacheState dui_get_active_element_impl(
     const DUI_Id type, const int id, const DUI_Kind kind, const bool disabled, const int size,
-    void** element, const DUI_LayoutData layout_data
+    void** element, const DUI_Placement placement
 ) {
-    const DUI_BoundsData bounds_data = dui_next_bounds_impl(layout_data);
+    const DUI_BoundsData bounds_data = dui_next_bounds_impl(placement);
 
     const DUI_ElementCacheState result = dui_get_element_impl(
         type, id, kind, bounds_data.tabOrderBack, disabled, size, element

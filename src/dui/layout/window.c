@@ -1,8 +1,8 @@
 #include <dui/layout/window.h>
 #include <dui/environment.h>
 
-DUI_BoundsData dui__window_next_bounds(void* element, DUI_LayoutData data) {
-    NOB_UNUSED(data);
+DUI_BoundsData dui__window_next_bounds(void* element, DUI_Placement placement) {
+    NOB_UNUSED(placement);
     const DUI_WindowElement* window_element = element;
 
     return CLITERAL(DUI_BoundsData){

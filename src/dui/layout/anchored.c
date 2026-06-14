@@ -1,7 +1,7 @@
 #include <dui/layout/anchored.h>
 #include <dui/environment.h>
 
-DUI_BoundsData dui__anchored_next_bounds(void* element, DUI_LayoutData data) {
+DUI_BoundsData dui__anchored_next_bounds(void* element, DUI_Placement placement) {
     DUI_AnchoredElement* anchored_element = element;
 
     DUI_BoundsData result = {
@@ -9,35 +9,35 @@ DUI_BoundsData dui__anchored_next_bounds(void* element, DUI_LayoutData data) {
         .tabOrderBack = false,
     };
 
-    switch (data.anchor) {
+    switch (placement.anchor) {
     case DUI_LEFT:
         result.bounds.x += anchored_element->inset_left;
         result.bounds.y += anchored_element->inset_top;
-        result.bounds.width = data.size;
+        result.bounds.width = placement.size;
         result.bounds.height -= anchored_element->inset_top + anchored_element->inset_bottom;
-        anchored_element->inset_left += data.size + anchored_element->gap;
+        anchored_element->inset_left += placement.size + anchored_element->gap;
         break;
     case DUI_RIGHT:
-        result.bounds.x += result.bounds.width - anchored_element->inset_right - data.size;
+        result.bounds.x += result.bounds.width - anchored_element->inset_right - placement.size;
         result.bounds.y += anchored_element->inset_top;
-        result.bounds.width = data.size;
+        result.bounds.width = placement.size;
         result.bounds.height -= anchored_element->inset_top + anchored_element->inset_bottom;
-        anchored_element->inset_right += data.size + anchored_element->gap;
+        anchored_element->inset_right += placement.size + anchored_element->gap;
         result.tabOrderBack = true;
         break;
     case DUI_TOP:
         result.bounds.x += anchored_element->inset_left;
         result.bounds.y += anchored_element->inset_top;
-        result.bounds.height = data.size;
+        result.bounds.height = placement.size;
         result.bounds.width -= anchored_element->inset_left - anchored_element->inset_right;
-        anchored_element->inset_top += data.size + anchored_element->gap;
+        anchored_element->inset_top += placement.size + anchored_element->gap;
         break;
     case DUI_BOTTOM:
         result.bounds.x += anchored_element->inset_left;
-        result.bounds.y += result.bounds.height - anchored_element->inset_bottom - data.size;
-        result.bounds.height = data.size;
+        result.bounds.y += result.bounds.height - anchored_element->inset_bottom - placement.size;
+        result.bounds.height = placement.size;
         result.bounds.width -= anchored_element->inset_left - anchored_element->inset_right;
-        anchored_element->inset_bottom += data.size + anchored_element->gap;
+        anchored_element->inset_bottom += placement.size + anchored_element->gap;
         result.tabOrderBack = true;
         break;
     case DUI_REMAINING:
@@ -63,7 +63,7 @@ void dui__anchored_reset(void* element) {
 
 void dui_begin_anchored_impl(const int id, const DUI_AnchoredData data) {
     DUI_AnchoredElement* element;
-    dui_begin_layout(DUI_ANCHORED_TYPE_ID, id, data.layout_data, element);
+    dui_begin_layout(DUI_ANCHORED_TYPE_ID, id, data.placement, element);
     element->layout_element.callback = dui__anchored_next_bounds;
     element->layout_element.reset_callback = dui__anchored_reset;
     element->gap = data.gap;

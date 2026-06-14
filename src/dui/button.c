@@ -17,7 +17,7 @@ bool dui_button_impl(const int id, const DUI_ButtonData data) {
         data.kind,
         data.disabled,
         element,
-        dui_forward_layout(preferred_width, preferred_height, data.layout_data)
+        dui_forward_placement(preferred_width, preferred_height, data.placement)
     ) == DUI_NEWLY_CREATED) {
         if (data.disabled) {
             element->background = dui_ca_create(DUI_BUTTON_BG_DISABLED(data.kind));

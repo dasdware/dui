@@ -7,7 +7,7 @@
 #define DUI_GRID_TYPE_ID DUI_ID("dui-grid", 8, 3961429178)
 
 typedef struct {
-    DUI_LayoutData layout_data;
+    DUI_Placement placement;
     int columns;
     int rows;
     DUI_Direction direction;

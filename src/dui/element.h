@@ -87,11 +87,11 @@ DUI_ElementCacheState dui_get_element_impl(
     DUI_Id type, int id, DUI_Kind kind, bool tabOrderBack, bool disabled, int size, void** element
 );
 
-#define dui_get_active_element(type, id, kind, disabled, element, layout_data) \
-    dui_get_active_element_impl(type, id, kind, disabled, sizeof(*element), (void**)&element, layout_data)
+#define dui_get_active_element(type, id, kind, disabled, element, placement) \
+    dui_get_active_element_impl(type, id, kind, disabled, sizeof(*element), (void**)&element, placement)
 DUI_ElementCacheState dui_get_active_element_impl(
     DUI_Id type, int id, DUI_Kind kind, bool disabled, int size,
-    void** element, DUI_LayoutData layout_data
+    void** element, DUI_Placement placement
 );
 
 typedef struct {
