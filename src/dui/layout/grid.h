@@ -29,7 +29,7 @@ typedef struct {
 #define dui_grid_impl_(id, ...) dui_grid_impl(id, __VA_ARGS__)
 #define dui_grid_impl(id, ...) \
 bool dui__guard_ ## id = true; \
-for (dui_begin_grid_impl(id, CLITERAL(DUI_GridData) { __VA_ARGS__ }); dui__guard_ ## id; dui_end_grid(), dui__guard_ ## id = false)
+    for (dui_begin_grid_impl(id, CLITERAL(DUI_GridData) { __VA_ARGS__ }); dui__guard_ ## id; dui_end_grid(), dui__guard_ ## id = false)
 
 #define dui_begin_grid(...) dui_begin_grid_impl(__COUNTER__, CLITERAL(DUI_GridData) { __VA_ARGS__ })
 void dui_begin_grid_impl(int id, DUI_GridData data);

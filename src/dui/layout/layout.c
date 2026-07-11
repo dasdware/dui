@@ -19,6 +19,7 @@ void dui_begin_layout_impl(
 
     DUI_LayoutElement* layout_element = *element;
     layout_element->parent_layout_element = dui_env()->layout_element_stack_top;
+    layout_element->parent_layout_element->child_layout_element = layout_element;
     dui_env()->layout_element_stack_top = layout_element;
 
     if (layout_element->reset_callback) {
@@ -33,6 +34,7 @@ void dui_begin_inactive_layout_impl(
 
     DUI_LayoutElement* layout_element = *element;
     layout_element->parent_layout_element = dui_env()->layout_element_stack_top;
+    layout_element->parent_layout_element->child_layout_element = layout_element;
     dui_env()->layout_element_stack_top = layout_element;
 
     if (layout_element->reset_callback) {
@@ -42,6 +44,7 @@ void dui_begin_inactive_layout_impl(
 
 void dui_end_layout() {
     dui_env()->layout_element_stack_top = dui_env()->layout_element_stack_top->parent_layout_element;
+    dui_env()->layout_element_stack_top->child_layout_element = NULL;
 }
 
 DUI_Placement dui_forward_placement(const int preferred_width, const int preferred_height, DUI_Placement placement) {
@@ -52,4 +55,30 @@ DUI_Placement dui_forward_placement(const int preferred_width, const int preferr
         placement.height = preferred_height;
     }
     return placement;
+}
+
+Vector2 dui_transform_client_to_screen(const Vector2 coordinate) {
+    Vector2 result = coordinate;
+    DUI_LayoutElement* layout_element = dui_env()->layout_element_stack_top;
+    while (layout_element) {
+        if (layout_element->transform_coordinate_callback) {
+            result = layout_element->transform_coordinate_callback(layout_element, result, DUI_TRANSFORM_FROM_CLIENT);
+        }
+        layout_element = layout_element->parent_layout_element;
+    }
+
+    return result;
+}
+
+Vector2 dui_transform_screen_to_client(const Vector2 coordinate) {
+    Vector2 result = coordinate;
+    DUI_LayoutElement* layout_element = &dui_env()->root_element.layout_element;
+    while (layout_element) {
+        if (layout_element->transform_coordinate_callback) {
+            result = layout_element->transform_coordinate_callback(layout_element, result, DUI_TRANSFORM_TO_CLIENT);
+        }
+        layout_element = layout_element->child_layout_element;
+    }
+
+    return result;
 }

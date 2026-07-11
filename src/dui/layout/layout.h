@@ -32,15 +32,25 @@ typedef struct {
     bool tabOrderBack;
 } DUI_BoundsData;
 
+typedef enum {
+    DUI_TRANSFORM_TO_CLIENT,
+    DUI_TRANSFORM_FROM_CLIENT,
+} DUI_TransformCoordinateDirection;
+
 typedef struct DUI_LayoutElement DUI_LayoutElement;
 typedef DUI_BoundsData (*DUI_LayoutCallback)(void* element, DUI_Placement placement);
 typedef void (*DUI_LayoutResetCallback)(void* element);
+typedef Vector2 (*DUI_LayoutTransformCoordinateCallback)(
+    void* element, Vector2 coordinate, DUI_TransformCoordinateDirection direction
+);
 
 struct DUI_LayoutElement {
     DUI_Element element;
     DUI_LayoutElement* parent_layout_element;
+    DUI_LayoutElement* child_layout_element;
     DUI_LayoutCallback callback;
     DUI_LayoutResetCallback reset_callback;
+    DUI_LayoutTransformCoordinateCallback transform_coordinate_callback;
 };
 
 #define dui_next_bounds(...) dui_next_bounds_impl(CLITERAL(DUI_Placement) { __VA_ARGS__ })
@@ -55,5 +65,10 @@ void dui_begin_inactive_layout_impl(DUI_Id type, int id, size_t size, void** ele
 void dui_end_layout();
 
 DUI_Placement dui_forward_placement(int preferred_width, int preferred_height, DUI_Placement placement);
+
+Vector2 dui_transform_client_to_screen(Vector2 coordinate);
+Vector2 dui_transform_screen_to_client(Vector2 coordinate);
+
+#define dui_client_mouse_position() dui_transform_screen_to_client(GetMousePosition())
 
 #endif // DUI_LAYOUT_LAYOUT_H
