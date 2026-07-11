@@ -14,6 +14,14 @@
 
 #define DUI_PADDING_ALL(bounds, size) DUI_PADDING(bounds, size, size, size, size)
 
+#define DUI_CENTER(bounds, w, h)                      \
+    CLITERAL(Rectangle) {                             \
+        .x = (bounds).x + ((bounds).width - (w)) / 2, \
+        .y = (bounds).y + ((bounds).height - (h)) / 2, \
+        .width = (w),                                 \
+        .height = (h),                                \
+    }
+
 typedef enum {
     DUI_VERTICAL,
     DUI_HORIZONTAL,
